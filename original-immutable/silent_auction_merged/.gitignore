@@ -1,0 +1,12 @@
+# Local config (copy from config/env.php.example)
+config/env.php
+
+# Composer dependencies (regenerate with: composer install)
+vendor/
+
+# PHPUnit result cache (see phpunit.xml cacheDirectory)
+.phpunit.cache/
+
+# Ad-hoc manual test output
+test_web_*.txt
+test_web_*.bin
