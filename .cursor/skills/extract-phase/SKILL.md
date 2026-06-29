@@ -1,22 +1,22 @@
 ---
 name: extract-phase
-description: Extracts one research phase from plan/research-project-plan.md (section 7) into plan/phases/phase{N}.md, splitting key activities into Instructions/Results subsections and preserving §/Decision citations without inlining referenced content. Use when the user asks to extract, generate, or write a phase file (phase1.md–phase5.md) from the research project plan.
+description: Extracts one research phase from plan/research-project-plan.md (section 7) into plan/phase{N}/phase{N}.md, splitting key activities into Instructions/Results subsections and preserving §/Decision citations without inlining referenced content. Use when the user asks to extract, generate, or write a phase file (phase1.md–phase5.md) from the research project plan.
 disable-model-invocation: true
 ---
 
 # Extract Phase
 
-Write a single executable phase document from `plan/research-project-plan.md` §7 into `plan/phases/phase{N}.md` (N = 1–5).
+Write a single executable phase document from `plan/research-project-plan.md` §7 into `plan/phase{N}/phase{N}.md` (N = 1–5).
 
 ## Inputs
 
-| Input          | Path                            |
-| -------------- | ------------------------------- |
-| Source plan    | `plan/research-project-plan.md` |
-| Example output | `plan/phases/phase1.md`         |
-| Output target  | `plan/phases/phase{N}.md`       |
+| Input          | Path                              |
+| -------------- | --------------------------------- |
+| Source plan    | `plan/research-project-plan.md`   |
+| Example output | `plan/phase1/phase1.md`           |
+| Output target  | `plan/phase{N}/phase{N}.md`       |
 
-Read the example (`phase1.md`) before writing. Match its tone, structure, and level of self-containment.
+Read the example (`plan/phase1/phase1.md`) before writing. Match its tone, structure, and level of self-containment.
 
 ## Workflow
 
@@ -28,7 +28,7 @@ Read the example (`phase1.md`) before writing. Match its tone, structure, and le
    - `Decisions N.M–N.P` → each decision in range
 4. **Resolve references for writing** — read each cited block in the source so instructions are accurate. **Do not copy** referenced sections into the phase file; preserve citations (`§X.Y`, `Decision X.Y`) in instructions and phase-level text so the reader can look them up in `research-project-plan.md` when needed.
 5. **Filter to required actions** — turn actionable items into activity subsections; keep contextual prose (purpose narrative, risk flags, “measure vs evaluate” notes) at phase level, not as activities.
-6. **Write** `plan/phases/phase{N}.md`. Overwrite if it exists.
+6. **Write** `plan/phase{N}/phase{N}.md`. Create `plan/phase{N}/` if missing. Overwrite the file if it exists.
 
 ## Output structure
 
@@ -93,7 +93,7 @@ Use as a checklist while writing; still scan the phase block for any citation no
 
 - Normalize “your/you” to neutral wording where the example does (phase1 uses “the PHP app”, not “your PHP app”).
 - Keep markdown formatting from the source (_italics_, `code`, tables) in phase-level context and instructions where it appears in §7.
-- File name: `phase1.md` … `phase5.md` (no zero-padding).
+- **Layout:** one directory per phase — `plan/phase1/phase1.md` … `plan/phase5/phase5.md` (no zero-padding in folder or file names).
 - Do not modify `plan/research-project-plan.md` or `original-immutable/`.
 
 ## Verification
@@ -101,7 +101,8 @@ Use as a checklist while writing; still scan the phase block for any citation no
 Before finishing:
 
 - [ ] Header matches `# Phase N: [title]`
+- [ ] Output written to `plan/phase{N}/phase{N}.md`
 - [ ] Every actionable item from §7 for this phase has `###` + **Instructions** + **Results:** ...
 - [ ] Every `§` / `Decision` citation from the phase block appears in the output (instructions or phase-level text), with **no** inlined scoped excerpts
 - [ ] No `**Scoped context:**` blocks and no `## Scoped references` section
-- [ ] Structure matches `plan/phases/phase1.md`
+- [ ] Structure matches `plan/phase1/phase1.md`
