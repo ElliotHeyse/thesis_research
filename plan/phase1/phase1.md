@@ -10,16 +10,20 @@
 
 **Instructions:** Produce a feature inventory: every in-scope feature, files involved, complexity rating. Doubles as migration checklist _and_ completeness scorecard. Scope: everything except for composer testing (functional for the end-user).
 
-**Results:** ...
+**Results:** [feature-inventory.md](./feature-inventory.md)
 
 ### Data Model Documentation
 
 **Instructions** Document the data model: schema export, relationships, representative seed data for testing.
 
-**Results:** ...
+**Results:** [data-model-documentation/](./data-model-documentation/)
+
+- [database.sql](./data-model-documentation/database.sql) (schema)
+- [relationships.md](./data-model-documentation/relationships.md)
+- [seed.sql](./data-model-documentation/seed.sql) (test data)
 
 ### Expected hiccups due to PHP-specific constructs
 
-**Instructions:** Record PHP-specific constructs likely to resist migration (session handling, global state, raw SQL). These are the _predictions_ of where AI will struggle — comparing prediction vs. reality later is strong analytical material, and may differ by methodology.
+**Instructions:** Identify PHP-specific constructs likely to resist migration (session handling, global state, raw SQL, others...). These are the _predictions_ of where AI will struggle — comparing prediction vs. reality later is strong analytical material, and may differ by methodology.
 
-**Results:** ...
+**Results:** [php-migration-friction.md](./php-migration-friction.md)

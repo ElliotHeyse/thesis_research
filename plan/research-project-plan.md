@@ -54,7 +54,7 @@ Your thesis argument leads with **completeness**, so the dimensions are weighted
 
 These are decisions that, once made, everything else depends on. Lock them early and document the reasoning — the _justification_ is assessable thesis content, not overhead.
 
-### Decision 2.1 — Scope freeze of the legacy app
+### Decision 2.1 — Scope freeze of the legacy app _(RESOLVED)_
 
 **Question:** Which features of the PHP app are _in scope_ for migration?  
 **Why it matters:** With a small codebase you can likely migrate everything, but you must decide explicitly. Any feature you exclude must be excluded from _all 8 migrations_ to keep every comparison fair.  
