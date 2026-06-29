@@ -1,0 +1,109 @@
+---
+description: Silent Auction MySQL schema — tables, columns, types, relationships, and PHP query conventions. Use when writing SQL, seed data, migrations, or data-layer code in silent_auction_merged.
+alwaysApply: false
+---
+
+# Silent Auction Database Schema
+
+**Source of truth:** `database.sql` (DDL) and `seed.sql` (seed data).  
+**Database name:** `silent_auction`
+
+## Naming Conventions
+
+- DDL uses **PascalCase** table and column names (`Donor`, `DonorID`).
+- PHP queries in `silent_auction_merged/data/` use **lowercase** table names (`donor`, `item`, …).
+- Column names stay PascalCase in both (`DonorID`, `TaxReceipt`).
+- On Windows MySQL, case-insensitive table names resolve both forms. On Linux, align `lower_case_table_names` or rename tables.
+
+## Tables
+
+### Donor
+
+| Column       | Type                   | Notes                      |
+| ------------ | ---------------------- | -------------------------- |
+| DonorID      | INT PK, AUTO_INCREMENT |                            |
+| BusinessName | VARCHAR(75)            | nullable                   |
+| ContactName  | VARCHAR(75)            |                            |
+| ContactEmail | VARCHAR(200)           |                            |
+| ContactTitle | VARCHAR(75)            | nullable                   |
+| Address      | VARCHAR(75)            |                            |
+| City         | VARCHAR(30)            |                            |
+| State        | VARCHAR(2)             |                            |
+| ZipCode      | VARCHAR(5)             |                            |
+| TaxReceipt   | BOOLEAN                | `0` = not sent, `1` = sent |
+
+### Bidder
+
+| Column     | Type                   | Notes          |
+| ---------- | ---------------------- | -------------- |
+| BidderID   | INT PK, AUTO_INCREMENT |                |
+| Name       | VARCHAR(75)            |                |
+| Address    | VARCHAR(75)            |                |
+| CellNumber | VARCHAR(10)            |                |
+| HomeNumber | VARCHAR(10)            | nullable       |
+| Email      | VARCHAR(200)           |                |
+| Paid       | BOOLEAN                | payment status |
+
+### Category
+
+| Column      | Type                   | Notes |
+| ----------- | ---------------------- | ----- |
+| CategoryID  | INT PK, AUTO_INCREMENT |       |
+| Description | VARCHAR(75)            |       |
+
+### Lot
+
+| Column        | Type                   | Notes                         |
+| ------------- | ---------------------- | ----------------------------- |
+| LotID         | INT PK, AUTO_INCREMENT |                               |
+| Description   | VARCHAR(75)            |                               |
+| CategoryID    | INT                    | → Category                    |
+| WinningBid    | DECIMAL(10,2)          | nullable until auction closes |
+| WinningBidder | INT                    | → Bidder; nullable            |
+| Delivered     | BOOLEAN                | item delivered to winner      |
+| Image         | VARCHAR(500)           | nullable                      |
+
+### Item
+
+| Column      | Type                   | Notes                                                  |
+| ----------- | ---------------------- | ------------------------------------------------------ |
+| ItemID      | INT PK, AUTO_INCREMENT |                                                        |
+| Description | VARCHAR(75)            |                                                        |
+| RetailValue | DECIMAL(10,2)          |                                                        |
+| DonorID     | INT                    | → Donor                                                |
+| LotID       | INT                    | → Lot; **NULL** = unassigned (awaiting lot assignment) |
+
+### Bid _(optional)_
+
+Only needed for live self-service bidding. Composite PK.
+
+| Column   | Type          | Notes      |
+| -------- | ------------- | ---------- |
+| LotID    | INT           | → Lot      |
+| BidderID | INT           | → Bidder   |
+| BidTime  | DATETIME      | part of PK |
+| Bid      | DECIMAL(10,2) |            |
+
+## Relationships
+
+```
+Donor 1──* Item *──0..1 Lot *──1 Category
+                Lot *──0..1 Bidder (WinningBidder)
+                Lot 1──* Bid *──1 Bidder
+```
+
+- Deleting a donor is blocked when items reference it (FK guard in app).
+- Items with `LotID IS NULL` appear in the lot-assignment UI.
+- `TaxReceipt` is set to `1` after tax receipt generation (`db_donors.php`).
+
+## Query Examples
+
+```sql
+-- Schema DDL
+CREATE TABLE Donor (DonorID INT NOT NULL AUTO_INCREMENT, ...);
+
+-- PHP data layer (lowercase table names)
+SELECT * FROM donor WHERE DonorID = :donor_id;
+SELECT i.* FROM item i LEFT JOIN lot l ON i.LotID = l.LotID;
+UPDATE donor SET TaxReceipt = 1 WHERE DonorID = :donor_id;
+```
