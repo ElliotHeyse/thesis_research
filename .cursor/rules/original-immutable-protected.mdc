@@ -1,0 +1,33 @@
+---
+description: Protect original-immutable/ from any file or folder changes
+alwaysApply: true
+---
+
+# original-immutable is read-only
+
+`thesis_research/original-immutable/` is a frozen reference copy. **Never modify it** — not the folder itself, any subfolder, or any file at any depth.
+
+## Forbidden
+
+Do not use edit, write, delete, rename, or move operations on paths under:
+
+`thesis_research/original-immutable/**`
+
+This includes:
+
+- Creating or deleting files or directories
+- Editing file contents (including formatting, comments, or config)
+- Renaming or moving files or folders
+- Overwriting via shell commands (`cp`, `mv`, `rm`, `git checkout`, etc.)
+
+## Allowed
+
+- **Read** files for reference, analysis, or comparison
+- **Execute** scripts, tests, servers, or other commands that run against code in `original-immutable/` without changing its contents
+- **Search** and cite paths under `original-immutable/` in responses
+
+## When changes are needed
+
+Copy or recreate work **outside** `original-immutable/` (for example under another folder in `thesis_research/`). Do not patch files in place inside `original-immutable/`.
+
+If the user explicitly asks to change something in `original-immutable/`, refuse and suggest working in a writable copy instead.
