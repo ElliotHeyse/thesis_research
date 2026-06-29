@@ -257,8 +257,8 @@ Phases are sequenced by **dependency**, not fixed dates. Each lists its entry co
 - Produce a **feature inventory**: every in-scope feature, files involved, complexity rating. Doubles as migration checklist _and_ completeness scorecard.
 - Document the **data model**: schema export, relationships, representative seed data for testing.
 - Record **PHP-specific constructs** likely to resist migration (session handling, global state, raw SQL). These are your _predictions_ of where AI will struggle — comparing prediction vs. reality later is strong analytical material, and may differ by methodology (does M4 overcome what M1 couldn't?).  
-**Exit condition:** Scope frozen (Decision 2.1); feature inventory complete; representative test data prepared.  
-**Note:** Lighter than usual since you know the code — but the inventory's quality caps your completeness measurement's quality. Don't skip it.
+  **Exit condition:** Scope frozen (Decision 2.1); feature inventory complete; representative test data prepared.  
+  **Note:** Lighter than usual since you know the code — but the inventory's quality caps your completeness measurement's quality. Don't skip it.
 
 ### Phase 2 — Define instruments, methodologies, and order
 

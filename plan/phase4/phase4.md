@@ -11,6 +11,7 @@ This is the _first_ point at which results are interpreted.
 ### Build the comparison matrix
 
 **Instructions:** Build the comparison matrix (legacy baseline vs. each cell at R0 and R1), readable along all three axes:
+
 - _Down the methodology axis_ (holding stack fixed): does more human structuring improve completeness/correctness/quality — or just relocate the human effort earlier?
 - _Across the stack axis_ (holding methodology fixed): Next.js vs. Blazor, interpreted through the familiarity confound (§5.4).
 - _Across the remediation axis_ (R0→R1 delta): how much did the directed remediation loop recover, and does the delta shrink as methodology structuring increases (§3.4)?

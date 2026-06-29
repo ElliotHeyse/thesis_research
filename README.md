@@ -8,10 +8,10 @@ The study is a controlled case study: one legacy app, one engineer, one AI tool.
 
 ## Repository layout
 
-| Path | Purpose |
-|------|---------|
+| Path                                         | Purpose                                                                  |
+| -------------------------------------------- | ------------------------------------------------------------------------ |
 | [`original-immutable/`](original-immutable/) | Frozen legacy PHP app (the research control). Read-only — do not modify. |
-| [`plan/`](plan/) | Research design, decisions, and phased execution guides. |
+| [`plan/`](plan/)                             | Research design, decisions, and phased execution guides.                 |
 
 Migration outputs and working copies will live outside `original-immutable/` as the experiment progresses.
 

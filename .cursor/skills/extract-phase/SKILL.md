@@ -10,11 +10,11 @@ Write a single executable phase document from `plan/research-project-plan.md` §
 
 ## Inputs
 
-| Input          | Path                              |
-| -------------- | --------------------------------- |
-| Source plan    | `plan/research-project-plan.md`   |
-| Example output | `plan/phase1/phase1.md`           |
-| Output target  | `plan/phase{N}/phase{N}.md`       |
+| Input          | Path                            |
+| -------------- | ------------------------------- |
+| Source plan    | `plan/research-project-plan.md` |
+| Example output | `plan/phase1/phase1.md`         |
+| Output target  | `plan/phase{N}/phase{N}.md`     |
 
 Read the example (`plan/phase1/phase1.md`) before writing. Match its tone, structure, and level of self-containment.
 
