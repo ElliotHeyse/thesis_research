@@ -35,7 +35,7 @@
 
 **Instructions:** Build the test suite against the legacy PHP app and get it green before any migration exists. This proves the tests are valid independently of any migration.
 
-**Results:** Reusable test suite at [test-suite/](../../test-suite/).
+**Results:** Reusable test suite at [test-suite/](../../test-suite/). Oracle all green.
 
 ### Configure code-quality instrumentation
 

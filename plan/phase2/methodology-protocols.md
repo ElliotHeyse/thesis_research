@@ -4,7 +4,7 @@
 
 **Related:** [research-project-plan.md §3 methodology axis](../research-project-plan.md#3-the-methodology-axis-planning-authority-m1m3) · [phase2.md](./phase2.md) · [feature-inventory.md](../phase1/feature-inventory.md) (held back from the agent — control, not input)
 
-**Status:** _**TODO — prompts not yet frozen.**_ Fill the verbatim prompt blocks below, then change to FROZEN — Phase 2.
+**Status:** _**FROZEN**_ — Phase 2.
 
 ---
 
