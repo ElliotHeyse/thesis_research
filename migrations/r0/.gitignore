@@ -1,3 +1,7 @@
 # This is ignored to maintain a clean folder while different migration cells are created and switched between.
 # Each migration cell can remove this gitignore, which will resolve itself after all migrations are merged again
 # migrated-project/
+
+# Disable all other migration cells
+# m1/s1-nextjs/
+m1/s2-blazor/
