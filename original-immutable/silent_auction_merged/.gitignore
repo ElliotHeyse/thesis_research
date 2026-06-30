@@ -10,3 +10,6 @@ vendor/
 # Ad-hoc manual test output
 test_web_*.txt
 test_web_*.bin
+
+# SonarQube results
+.scannerwork/
