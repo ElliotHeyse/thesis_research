@@ -1,0 +1,16 @@
+@using migrated_project.Components.Shared
+
+<SubNav Tabs="Tabs" ActiveTab="@ActiveTab" ActionContent="@ActionContent" />
+
+@code {
+    private static readonly SubNav.SubNavTab[] Tabs =
+    [
+        new("donors", "All Donors", "/donors"),
+        new("pending", "Pending Receipts", "/donors/pending-receipts"),
+        new("letters", "Letters", "/donors/letters"),
+        new("receipts", "Tax Receipts", "/donors/receipts")
+    ];
+
+    [Parameter] public string ActiveTab { get; set; } = "donors";
+    [Parameter] public RenderFragment? ActionContent { get; set; }
+}
