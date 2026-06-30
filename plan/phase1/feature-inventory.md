@@ -6,6 +6,8 @@
 
 **Out of scope:** PHPUnit suite (`tests/`, `phpunit.xml`, `composer.json` dev scripts).
 
+**Control — held back from the agent:** This inventory is **not** given to the migrating agent. In M3 (directed planning) the agent must discover the application's features itself; this document is the held-back ground truth used to score completeness (did discovery surface all in-scope features?), so it is a control, not a migration input.
+
 **Complexity:** **L** = low (read-only or simple CRUD) · **M** = medium (validation, redirects, joins, multi-step) · **H** = high (PDF pipeline, batch operations, side effects, dynamic SQL)
 
 **Scorecard:** 38 in-scope features · 1 documented stub · use ☐ / ☑ when tracking migration
