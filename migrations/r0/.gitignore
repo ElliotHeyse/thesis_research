@@ -3,4 +3,5 @@
 # migrated-project/
 
 # Disable all other migration cells
-m1/s1-nextjs/
+# m1/s1-nextjs/
+# m1/s2-blazor/
