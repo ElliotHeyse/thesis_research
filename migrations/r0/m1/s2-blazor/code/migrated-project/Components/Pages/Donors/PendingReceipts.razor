@@ -1,0 +1,65 @@
+@page "/donors/pending-receipts"
+@inject DonorService DonorService
+
+<PageTitle>Pending Receipts | Taylor PTA - Silent Auction</PageTitle>
+
+<DonorsSubNav ActiveTab="pending" />
+
+<FlashMessages />
+
+@if (_donors is null)
+{
+    <p>Loading...</p>
+}
+else if (_donors.Count == 0)
+{
+    <div class="c-empty-state">No donors pending receipts</div>
+}
+else
+{
+    <div class="c-table-shell">
+        <table class="c-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Business Name</th>
+                    <th>Contact Name</th>
+                    <th>Email</th>
+                    <th>City</th>
+                    <th>State</th>
+                    <th>Total Items</th>
+                    <th>Total Value</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var donor in _donors)
+                {
+                    <tr>
+                        <td>@donor.DonorID</td>
+                        <td>@FormatHelper.OrDash(donor.BusinessName)</td>
+                        <td>@FormatHelper.OrDash(donor.ContactName)</td>
+                        <td>@FormatHelper.OrDash(donor.ContactEmail)</td>
+                        <td>@FormatHelper.OrDash(donor.City)</td>
+                        <td>@FormatHelper.OrDash(donor.State)</td>
+                        <td>@donor.TotalItems</td>
+                        <td>@FormatHelper.Currency(donor.TotalValue)</td>
+                        <td class="c-action-links">
+                            <a href="/donors/edit/@donor.DonorID">Edit</a>
+                            <a href="/donors/delete/@donor.DonorID">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+@code {
+    private List<DonorPendingReceiptRow>? _donors;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _donors = await DonorService.GetPendingReceiptsAsync();
+    }
+}

@@ -1,0 +1,27 @@
+@using Microsoft.AspNetCore.Components.Routing
+
+<div class="c-subnav">
+    <div class="c-subnav__tabs">
+        @foreach (var tab in Tabs)
+        {
+            <NavLink href="@tab.Href" class="@GetTabClass(tab.Key)" Match="NavLinkMatch.Prefix" ActiveClass="c-subnav__tab--active">
+                @tab.Label
+            </NavLink>
+        }
+    </div>
+    @if (ActionContent is not null)
+    {
+        <div class="c-subnav__actions">@ActionContent</div>
+    }
+</div>
+
+@code {
+    [Parameter] public required IReadOnlyList<SubNavTab> Tabs { get; set; }
+    [Parameter] public string ActiveTab { get; set; } = string.Empty;
+    [Parameter] public RenderFragment? ActionContent { get; set; }
+
+    private string GetTabClass(string key) =>
+        key == ActiveTab ? "c-subnav__tab c-subnav__tab--active" : "c-subnav__tab";
+
+    public record SubNavTab(string Key, string Label, string Href);
+}

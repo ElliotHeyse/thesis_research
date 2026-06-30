@@ -3,7 +3,7 @@
 | Field            | Value                                             |
 | ---------------- | ------------------------------------------------- |
 | Migration (cell) | `r<x>-m<y>-s<z>-<stack>` (e.g. `r0-m1-s1-nextjs`) |
-| Date             | 2026/06/30                                        |
+| Date             | 2026/07/01                                        |
 
 ## Conversation
 
