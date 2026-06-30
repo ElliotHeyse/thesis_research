@@ -41,7 +41,7 @@
 
 **Instructions:** Configure code-quality instrumentation that analyzes _both_ JS/TS and C# on comparable axes. Decide SonarQube's role/timing per §5.7 so R1 quality is not measured circularly (either hold back a non-driving lens for R1 quality, or defer SonarQube entirely until all R0/R1 work is done).
 
-**Results:** _**TECHNICAL TODO**_
+**Results:** Using SonarQube Cloud. Tested on python project, ready to go, but will need setup for every cell. Do at runtime.
 
 ### Confirm remediation stopping rule
 

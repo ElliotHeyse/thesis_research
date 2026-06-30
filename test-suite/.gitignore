@@ -8,3 +8,6 @@ __pycache__/
 
 # local secrets / config — committed as .env.example instead
 .env
+
+# sonarqube results
+.sonar/
