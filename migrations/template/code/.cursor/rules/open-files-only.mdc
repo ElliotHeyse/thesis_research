@@ -1,0 +1,37 @@
+---
+description: Migration cells — do not explore files outside the opened workspace folder
+alwaysApply: true
+---
+
+# Workspace scope only — no exploration beyond the opened folder
+
+Work only within the folder(s) the user opened in Cursor (the file-explorer tree). Files do not need to be open in editor tabs — if they appear under the workspace root in the explorer, they are in scope.
+
+## Allowed
+
+- Any file or folder **under the workspace root** (editor tabs open or not)
+- Paths **explicitly attached** in the user's message (`@path`, drag-and-drop, pasted attachments)
+- Agent-requestable workspace rules when required — read the rule file only
+- Normal read, search, and edit tools **scoped to paths inside the workspace** (`Read`, `Glob`, `Grep`, `SemanticSearch`, etc.)
+
+## Forbidden
+
+Do not access anything **outside** the opened workspace root(s), including:
+
+- Parent folders, sibling migration cells, `plan/`, repo-level `original-immutable/`, or any path not under the workspace root
+- Shell or tool paths that escape the workspace (`../`, absolute paths outside the workspace)
+- Git output, imports, or stack traces used to reach files outside the workspace boundary
+
+Do not:
+
+- Treat the whole monorepo as in scope when the workspace is a migration cell `code/` folder
+- Use search or `@` references to pull in files outside the workspace
+
+## Required
+
+- Treat **Workspace Path** (and any additional workspace roots) as the hard boundary
+- If you need a file outside the workspace, **ask the user to add that folder to the workspace or attach the path** — do not fetch it yourself
+
+## When blocked
+
+Refuse and explain that this migration cell restricts access to the opened workspace folder for experiment validity.
