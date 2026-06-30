@@ -15,17 +15,17 @@
 
 ### Prompt 1
 
-Starting condition: None/Cold
+**Starting condition:** Describe initial state...
 
-Mode: `agent` | `plan` | `ask`
+**Mode:** `agent`
 
-Prompt: Do xyz...
+**Prompt:** Migrate the php application at @original-php-project/ to Blazor Server (.NET). Produce a full-stack implementation — frontend and backend — that is a working application equivalent to the existing one, using the existing database per the provided schema (do not modify the database). Migrate the functionality of the current app. The migrated code lives in @migrated-project, @original-php-project/ stays and remains unaltered.
 
 ---
 
-Duration: hh:mm:ss.ss
+**Duration:** hh:mm:ss.ss
 
-Brief description of changes: Added/Changed/... xyz...
+**Brief description of changes:** Added/Changed/... xyz...
 
 Reply:
 
