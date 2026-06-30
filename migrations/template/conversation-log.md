@@ -15,7 +15,7 @@
 
 ### Prompt 1
 
-**Starting condition:** Describe previous state.
+**Starting condition:** Describe initial state...
 
 **Mode:** `agent` | `plan` | `ask`
 
