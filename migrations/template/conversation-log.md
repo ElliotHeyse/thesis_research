@@ -1,29 +1,34 @@
-# Conversation Log — `<stack>-m<n>`
+# Conversation Log — `r<x>-m<y>-s<z>-<stack>`
 
-| Field            | Value                             |
-| ---------------- | --------------------------------- |
-| Migration (cell) | `<stack>-m<n>` (e.g. `nextjs-m3`) |
-| Phase            | R0 / R1                           |
-| Date             |                                   |
+| Field            | Value                                             |
+| ---------------- | ------------------------------------------------- |
+| Migration (cell) | `r<x>-m<y>-s<z>-<stack>` (e.g. `r0-m1-s1-nextjs`) |
+| Date             | 2026/06/30                                        |
 
 ## Conversation
 
 **Timing (wall-clock):**
 
-- pre-generation (spec): ...
-- generation: ...
+- pre-generation (spec): hh:mm:ss.ss or None (no planning)
+- generation: hh:mm:ss.ss
   > This should encompass recorded time per prompt, as well as invested time by the developer.
 
 ### Prompt 1
 
-| #   | Starting condition       | Mode                      | Prompt    | Time taken                             | Reply        | Description               |
-| --- | ------------------------ | ------------------------- | --------- | -------------------------------------- | ------------ | ------------------------- |
-| 1   | None/Cold                | agent / plan / ask / edit | Do xyz... | Time from prompt submit to agent done. | I did xyz... | Added/modified/... xyz... |
-| 2   | Identified issues xyz... |                           |           |                                        |              |                           |
-| 3   |                          |                           |           |                                        |              |                           |
-| 4   |                          |                           |           |                                        |              |                           |
-| 5   |                          |                           |           |                                        |              |                           |
-| 6   |                          |                           |           |                                        |              |                           |
-| 7   |                          |                           |           |                                        |              |                           |
-| 8   |                          |                           |           |                                        |              |                           |
-| 9   |                          |                           |           |                                        |              |                           |
+Starting condition: None/Cold
+
+Mode: `agent` | `plan` | `ask`
+
+Prompt: Do xyz...
+
+---
+
+Duration: hh:mm:ss.ss
+
+Brief description of changes: Added/Changed/... xyz...
+
+Reply:
+
+````md
+I did xyz...
+````

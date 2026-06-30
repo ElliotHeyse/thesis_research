@@ -27,7 +27,6 @@ Do not:
 
 - Treat the working tree on disk as the only source of truth
 - Read files directly when you need to understand the codebase
-- Log the starting condition as **None/Cold** in `conversation-log.md`
 
 ## Allowed
 
