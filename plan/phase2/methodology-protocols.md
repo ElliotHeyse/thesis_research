@@ -28,13 +28,13 @@
 **Frozen prompt — Next.js:**
 
 ```text
-Migrate this application to Next.js (App Router). Produce a full-stack implementation — frontend and backend — that is a working application equivalent to the existing one, using the existing database per the provided schema (do not modify the database). Migrate the functionality of the current app.
+Migrate the php application at @original-php-project/ to Next.js (App Router). Produce a full-stack implementation — frontend and backend — that is a working application equivalent to the existing one, using the existing database per the provided schema (do not modify the database). Migrate the functionality of the current app. The migrated code lives in @migrated-project, @original-php-project/ stays and remains unaltered.
 ```
 
 **Frozen prompt — Blazor:**
 
 ```text
-Migrate this application to Blazor Server (.NET). Produce a full-stack implementation — frontend and backend — that is a working application equivalent to the existing one, using the existing database per the provided schema (do not modify the database). Migrate the functionality of the current app.
+Migrate the php application at @original-php-project/ to Blazor Server (.NET). Produce a full-stack implementation — frontend and backend — that is a working application equivalent to the existing one, using the existing database per the provided schema (do not modify the database). Migrate the functionality of the current app. The migrated code lives in @migrated-project, @original-php-project/ stays and remains unaltered.
 ```
 
 ---
@@ -48,13 +48,13 @@ Migrate this application to Blazor Server (.NET). Produce a full-stack implement
 **Frozen prompt — Next.js:**
 
 ```text
-Migrate this application to Next.js (App Router). Produce a full-stack implementation — frontend and backend — that is a working application equivalent to the existing one, using the existing database per the provided schema (do not modify the database). Plan the migration of the current app's functionality, then carry it out.
+Migrate the php application at @original-php-project/ to Next.js (App Router). Produce a full-stack implementation — frontend and backend — that is a working application equivalent to the existing one, using the existing database per the provided schema (do not modify the database). Plan the migration of the current app's functionality. The migrated code lives in @migrated-project, @original-php-project/ stays and remains unaltered.
 ```
 
 **Frozen prompt — Blazor:**
 
 ```text
-Migrate this application to Blazor Server (.NET). Produce a full-stack implementation — frontend and backend — that is a working application equivalent to the existing one, using the existing database per the provided schema (do not modify the database). Plan the migration of the current app's functionality, then carry it out.
+Migrate the php application at @original-php-project/ to Blazor Server (.NET). Produce a full-stack implementation — frontend and backend — that is a working application equivalent to the existing one, using the existing database per the provided schema (do not modify the database). Plan the migration of the current app's functionality. The migrated code lives in @migrated-project, @original-php-project/ stays and remains unaltered.
 ```
 
 ---
@@ -71,13 +71,13 @@ Migrate this application to Blazor Server (.NET). Produce a full-stack implement
 **Frozen prompt — Next.js:**
 
 ```text
-Migrate this application to Next.js (App Router). Produce a full-stack implementation — frontend and backend — that is a working application equivalent to the existing one, using the existing database per the provided schema (do not modify the database). Plan the migration as follows: first, analyse the current application and identify all of its features yourself. Then plan the build along a layered structure — data access, then business logic, then API routes, then views — so that the plan covers exactly the features you identified and organises the work by layer. Carry out the plan once complete.
+Migrate the php application at @original-php-project/ to Next.js (App Router). Produce a full-stack implementation — frontend and backend — that is a working application equivalent to the existing one, using the existing database per the provided schema (do not modify the database). Plan the migration as follows: first, analyse the current application and identify all of its features yourself. Then plan the build along a layered structure — data access, then business logic, then API routes, then views — so that the plan covers exactly the features you identified and organises the work by layer. The migrated code lives in @migrated-project, @original-php-project/ stays and remains unaltered.
 ```
 
 **Frozen prompt — Blazor:**
 
 ```text
-Migrate this application to Blazor Server (.NET). Produce a full-stack implementation — frontend and backend — that is a working application equivalent to the existing one, using the existing database per the provided schema (do not modify the database). Plan the migration as follows: first, analyse the current application and identify all of its features yourself. Then plan the build along a layered structure — data access, then business logic, then page routing, then views — so that the plan covers exactly the features you identified and organises the work by layer. Carry out the plan once complete.
+Migrate the php application at @original-php-project/ to Blazor Server (.NET). Produce a full-stack implementation — frontend and backend — that is a working application equivalent to the existing one, using the existing database per the provided schema (do not modify the database). Plan the migration as follows: first, analyse the current application and identify all of its features yourself. Then plan the build along a layered structure — data access, then business logic, then page routing, then views — so that the plan covers exactly the features you identified and organises the work by layer. The migrated code lives in @migrated-project, @original-php-project/ stays and remains unaltered.
 ```
 
 ---

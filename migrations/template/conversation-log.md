@@ -15,17 +15,17 @@
 
 ### Prompt 1
 
-Starting condition: None/Cold
+**Starting condition:** Describe previous state.
 
-Mode: `agent` | `plan` | `ask`
+**Mode:** `agent` | `plan` | `ask`
 
-Prompt: Do xyz...
+**Prompt:** Do xyz...
 
 ---
 
-Duration: hh:mm:ss.ss
+**Duration:** hh:mm:ss.ss
 
-Brief description of changes: Added/Changed/... xyz...
+**Brief description of changes:** Added/Changed/... xyz...
 
 Reply:
 
