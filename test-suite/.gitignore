@@ -1,0 +1,10 @@
+# virtualenv
+venv/
+
+# python caches
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# local secrets / config — committed as .env.example instead
+.env

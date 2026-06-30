@@ -1,0 +1,14 @@
+# Correctness test harness — dependencies
+# Pinned with ~= (compatible release): patch updates allowed, major/minor frozen.
+# Reproducibility matters here — a rebuilt venv months later (during writing)
+# should resolve to the same toolchain that produced the results.
+
+pytest~=9.1            # test runner + fixtures (per-test seed reset)
+requests~=2.32         # HTTP client (fetch pages / POST flows / PDF bytes)
+beautifulsoup4~=4.13   # HTML -> normalized text (robust to markup differences)
+pdfplumber~=0.11       # PDF text extraction (D8 / D10 / I6)
+python-dotenv~=1.0     # load test-suite/.env into the environment before collection
+
+# --- Database driver: keep ONE, matching your stack -------------------------
+PyMySQL~=1.1           # MySQL / MariaDB
+# psycopg2-binary~=2.9 # Postgres (uncomment instead if you're on Postgres)

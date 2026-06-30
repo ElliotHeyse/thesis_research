@@ -29,13 +29,13 @@
 
 **Instructions:** Define the correctness test suite: which features get automated coverage, which get manual testing. Apply Decision 2.3's functional-equivalence definition identically across cells. Automated via HTTP-client content assertions against a fixed SQL seed for PHP and Next.js; identical assertions walked manually for Blazor.
 
-**Results:** _**TODO**_
+**Results:** [test-suite-definition.md](./test-suite-definition.md)
 
 ### Build test suite against legacy PHP
 
 **Instructions:** Build the test suite against the legacy PHP app and get it green before any migration exists. This proves the tests are valid independently of any migration.
 
-**Results:** _**TECHNICAL TODO**_
+**Results:** Reusable test suite at [test-suite/](../../test-suite/).
 
 ### Configure code-quality instrumentation
 
