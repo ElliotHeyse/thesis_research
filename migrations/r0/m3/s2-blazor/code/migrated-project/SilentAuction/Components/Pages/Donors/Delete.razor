@@ -1,0 +1,50 @@
+@page "/donors/delete/{DonorId:int}"
+@rendermode InteractiveServer
+@inject DonorService DonorService
+@inject NavigationManager Navigation
+@using SilentAuction.Services
+
+<PageTitle>Delete Donor | Taylor PTA - Silent Auction</PageTitle>
+
+<DonorsSubnav />
+
+@if (_donor is null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <ConfirmDelete Title="Delete Donor"
+                   Message="@_message"
+                   CanDelete="@_canDelete"
+                   CancelHref="/donors"
+                   OnConfirm="ConfirmDelete" />
+}
+
+@code {
+    [Parameter] public int DonorId { get; set; }
+
+    private Data.Entities.Donor? _donor;
+    private bool _canDelete;
+    private string _message = "";
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _donor = await DonorService.GetByIdAsync(DonorId);
+        if (_donor is null)
+        {
+            Navigation.NavigateTo("/donors?error=notfound");
+            return;
+        }
+
+        _message = $"Are you sure you want to delete donor \"{FormatService.GetDonorDisplayName(_donor)}\"?";
+        _canDelete = true;
+    }
+
+    private async Task ConfirmDelete()
+    {
+        var result = await DonorService.DeleteAsync(DonorId);
+        var type = result.IsSuccess ? "success" : "error";
+        Navigation.NavigateTo($"/donors?{type}={result.FlashCode}");
+    }
+}

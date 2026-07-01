@@ -1,0 +1,108 @@
+@page "/lots/items"
+@rendermode InteractiveServer
+@inject ItemService ItemService
+@inject NavigationManager Navigation
+@using SilentAuction.Models
+@using SilentAuction.Services
+
+<PageTitle>Items | Taylor PTA - Silent Auction</PageTitle>
+
+<LotsSubnav>
+    <ActionContent>
+        <a href="/lots/items/edit" class="c-btn c-btn--primary">Add New Item</a>
+        <button type="submit" form="items-lot-form" class="c-btn c-btn--success">Save Changes</button>
+    </ActionContent>
+</LotsSubnav>
+<FlashAlert />
+
+@if (_items is null || _lots is null)
+{
+    <p>Loading...</p>
+}
+else if (_items.Count == 0)
+{
+    <p class="c-empty-state">No items found.</p>
+}
+else
+{
+    <EditForm id="items-lot-form" Model="_formModel" OnValidSubmit="SaveLotChanges">
+        <div class="c-table-shell">
+            <table class="c-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Description</th>
+                        <th>Retail Value</th>
+                        <th>Donor</th>
+                        <th>Lot</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in _items)
+                    {
+                        <tr>
+                            <td>@item.ItemID</td>
+                            <td>@item.Description</td>
+                            <td>@FormatService.FormatCurrency(item.RetailValue)</td>
+                            <td>@FormatService.FormatOrDash(item.BusinessName)</td>
+                            <td>
+                                <select class="c-input" @bind="_lotAssignments[item.ItemID]">
+                                    <option value="-1">No lot selected</option>
+                                    @foreach (var lot in _lots)
+                                    {
+                                        <option value="@lot.LotID">@lot.Description</option>
+                                    }
+                                </select>
+                            </td>
+                            <td class="c-table__actions">
+                                <a href="/lots/items/edit/@item.ItemID">Edit</a>
+                                <a href="/lots/items/delete/@item.ItemID">Delete</a>
+                                <a href="/api/pdf/bidding-sheet/@item.ItemID" target="_blank">Bidding Sheet</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </EditForm>
+}
+
+@code {
+    private List<ItemListDto>? _items;
+    private List<LotOptionDto>? _lots;
+    private Dictionary<int, int> _lotAssignments = new();
+    private object _formModel = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _items = await ItemService.GetAllAsync();
+        _lots = await ItemService.GetLotOptionsAsync();
+        foreach (var item in _items)
+            _lotAssignments[item.ItemID] = item.LotID ?? -1;
+    }
+
+    private async Task SaveLotChanges()
+    {
+        if (_items is null) return;
+
+        var changes = new Dictionary<int, int?>();
+        foreach (var item in _items)
+        {
+            var current = item.LotID ?? -1;
+            var selected = _lotAssignments.GetValueOrDefault(item.ItemID, -1);
+            if (current != selected)
+                changes[item.ItemID] = selected <= 0 ? null : selected;
+        }
+
+        if (changes.Count == 0)
+        {
+            Navigation.NavigateTo("/lots/items?success=updated");
+            return;
+        }
+
+        var result = await ItemService.SaveLotAssignmentsAsync(changes);
+        var type = result.IsSuccess ? "success" : "error";
+        Navigation.NavigateTo($"/lots/items?{type}={result.FlashCode}");
+    }
+}
