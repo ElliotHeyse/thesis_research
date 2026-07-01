@@ -1,3 +1,8 @@
 # This is ignored to maintain a clean folder while different migration cells are created and switched between.
 # Each migration cell can remove this gitignore, which will resolve itself after all migrations are merged again
-migrated-project/
+# migrated-project/
+
+# Ignore all other migration cells per migration branch
+## m1/**
+## m2/**
+## m3/**

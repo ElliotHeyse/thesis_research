@@ -1,0 +1,38 @@
+﻿@using Microsoft.AspNetCore.Components.Routing
+@using SilentAuction.Services
+@inherits LayoutComponentBase
+@inject NavigationManager Navigation
+
+<header>
+    <div class="o-flex o-flex--justify-start o-flex--align-center u-gap-space-100 u-height-space-1100">
+        <img src="assets/Tiger-icon-hi-res.webp" alt="Taylor Elementary School PTA Logo" width="88" height="88">
+        <div class="o-flex o-flex--column o-flex--justify-between u-height-space-1100">
+            <h1>Taylor Elementary School PTA</h1>
+            <h2>Online Silent Auction</h2>
+        </div>
+    </div>
+
+    <nav class="c-nav">
+        <NavLink href="/" class="c-nav__item" Match="NavLinkMatch.All" ActiveClass="c-nav__item--active">Home</NavLink>
+        <div class="c-nav__divider"></div>
+        <NavLink href="/donors" class="c-nav__item" ActiveClass="c-nav__item--active">Donors</NavLink>
+        <div class="c-nav__divider"></div>
+        <NavLink href="/lots/items" class="c-nav__item" ActiveClass="c-nav__item--active">Lots</NavLink>
+        <div class="c-nav__divider"></div>
+        <NavLink href="/auction" class="c-nav__item" ActiveClass="c-nav__item--active">Auction</NavLink>
+    </nav>
+</header>
+
+<main class="o-container">
+    @Body
+</main>
+
+<footer>
+    <p>&copy; 2025 Online Silent Auction System</p>
+</footer>
+
+<div id="blazor-error-ui" data-nosnippet>
+    An unhandled error has occurred.
+    <a href="." class="reload">Reload</a>
+    <span class="dismiss">🗙</span>
+</div>

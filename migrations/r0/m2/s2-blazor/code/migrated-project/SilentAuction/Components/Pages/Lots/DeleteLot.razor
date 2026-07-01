@@ -1,0 +1,53 @@
+@page "/lots/lots/delete/{LotId:int}"
+@page "/lots/lots/delete/{LotId:int}/confirm"
+@rendermode InteractiveServer
+@inject LotService LotService
+@inject NavigationManager Navigation
+@inject FlashMessageService Flash
+
+<PageTitle>Delete Lot | Taylor PTA - Silent Auction</PageTitle>
+
+<LotsSubNav />
+
+@if (_lot is null)
+{
+    <p>Loading...</p>
+}
+else if (!_confirmed)
+{
+    <ConfirmDelete EntityType="lot"
+                   ConfirmUrl="@($"/lots/lots/delete/{LotId}/confirm")"
+                   CancelUrl="/lots/lots">
+        <Fields>
+            <p><strong>Lot ID:</strong> @_lot.LotID</p>
+            <p><strong>Description:</strong> @FormatHelper.OrDash(_lot.Description)</p>
+            <p><strong>Category ID:</strong> @FormatHelper.OrDash(_lot.CategoryID?.ToString())</p>
+        </Fields>
+    </ConfirmDelete>
+}
+
+@code {
+    [Parameter] public int LotId { get; set; }
+
+    private Lot? _lot;
+    private bool _confirmed;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _lot = await LotService.GetLotAsync(LotId);
+        if (_lot is null)
+        {
+            Flash.SetError("notfound");
+            Navigation.NavigateTo("/lots/lots");
+            return;
+        }
+
+        if (Navigation.Uri.Contains("/confirm", StringComparison.OrdinalIgnoreCase))
+        {
+            _confirmed = true;
+            await LotService.DeleteLotAsync(LotId);
+            Flash.SetSuccess("deleted");
+            Navigation.NavigateTo("/lots/lots");
+        }
+    }
+}

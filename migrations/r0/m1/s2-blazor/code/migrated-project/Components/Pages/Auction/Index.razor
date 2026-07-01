@@ -1,0 +1,57 @@
+@page "/auction"
+@inject AuctionService AuctionService
+
+<PageTitle>Auction | Taylor PTA - Silent Auction</PageTitle>
+
+@if (_categories is null || _itemsByCategory is null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div class="o-flex o-flex--column u-gap-space-200">
+        @foreach (var category in _categories)
+        {
+            var items = _itemsByCategory.GetValueOrDefault(category.CategoryID) ?? [];
+            <div class="c-auction-category">
+                <h3 class="c-auction-category__title">@category.Description</h3>
+                @if (items.Count == 0)
+                {
+                    <p class="c-auction-category__empty">No items in this category.</p>
+                }
+                else
+                {
+                    <ul class="c-auction-category__items">
+                        @foreach (var item in items)
+                        {
+                            <li class="c-auction-item">
+                                <span class="c-auction-item__description">@item.Description</span>
+                                <span class="c-auction-item__value">@FormatHelper.Currency(item.RetailValue)</span>
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+        }
+    </div>
+}
+
+@code {
+    private List<Category>? _categories;
+    private Dictionary<int, List<AuctionItemRow>>? _itemsByCategory;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _categories = await AuctionService.GetCategoriesAsync();
+        var items = await AuctionService.GetItemsAsync();
+
+        _itemsByCategory = new Dictionary<int, List<AuctionItemRow>>();
+        foreach (var item in items)
+        {
+            var key = item.CategoryID ?? 0;
+            if (!_itemsByCategory.ContainsKey(key))
+                _itemsByCategory[key] = [];
+            _itemsByCategory[key].Add(item);
+        }
+    }
+}

@@ -1,0 +1,120 @@
+@page "/donors/edit"
+@page "/donors/edit/{DonorId:int}"
+@rendermode InteractiveServer
+@inject DonorService DonorService
+@inject NavigationManager Navigation
+
+<PageTitle>@(IsEdit ? "Edit Donor" : "Add Donor") | Taylor PTA - Silent Auction</PageTitle>
+
+<DonorsSubNav ActiveTab="donors" />
+
+<FlashMessages />
+
+<EditForm Model="_model" OnValidSubmit="HandleSubmit" class="c-form">
+    <DataAnnotationsValidator />
+    <ValidationSummary class="alert alert-danger" />
+
+    <div class="c-form__field">
+        <label for="businessName">Business Name</label>
+        <InputText id="businessName" @bind-Value="_model.BusinessName" maxlength="75" class="c-form__input" />
+        <ValidationMessage For="() => _model.BusinessName" />
+    </div>
+
+    <div class="c-form__field">
+        <label for="contactName">Contact Name</label>
+        <InputText id="contactName" @bind-Value="_model.ContactName" maxlength="75" class="c-form__input" required />
+        <ValidationMessage For="() => _model.ContactName" />
+    </div>
+
+    <div class="c-form__field">
+        <label for="contactEmail">Email</label>
+        <InputText id="contactEmail" @bind-Value="_model.ContactEmail" maxlength="200" class="c-form__input" />
+        <ValidationMessage For="() => _model.ContactEmail" />
+    </div>
+
+    <div class="c-form__field">
+        <label for="contactTitle">Contact Title</label>
+        <InputText id="contactTitle" @bind-Value="_model.ContactTitle" maxlength="75" class="c-form__input" />
+        <ValidationMessage For="() => _model.ContactTitle" />
+    </div>
+
+    <div class="c-form__field">
+        <label for="address">Address</label>
+        <InputText id="address" @bind-Value="_model.Address" maxlength="75" class="c-form__input" />
+        <ValidationMessage For="() => _model.Address" />
+    </div>
+
+    <div class="c-form__field">
+        <label for="city">City</label>
+        <InputText id="city" @bind-Value="_model.City" maxlength="30" class="c-form__input" />
+        <ValidationMessage For="() => _model.City" />
+    </div>
+
+    <div class="c-form__field">
+        <label for="state">State</label>
+        <InputText id="state" @bind-Value="_model.State" maxlength="2" class="c-form__input" />
+        <ValidationMessage For="() => _model.State" />
+    </div>
+
+    <div class="c-form__field">
+        <label for="zipCode">Zip Code</label>
+        <InputText id="zipCode" @bind-Value="_model.ZipCode" maxlength="5" class="c-form__input" />
+        <ValidationMessage For="() => _model.ZipCode" />
+    </div>
+
+    @if (IsEdit)
+    {
+        <div class="c-form__field c-form__field--checkbox">
+            <InputCheckbox id="taxReceipt" @bind-Value="_model.TaxReceipt" />
+            <label for="taxReceipt">Tax Receipt Sent</label>
+        </div>
+    }
+
+    <div class="c-form__actions">
+        <button type="submit" class="c-button c-button--primary">@(IsEdit ? "Update Donor" : "Add Donor")</button>
+        <a href="/donors" class="c-button c-button--secondary">Cancel</a>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter] public int? DonorId { get; set; }
+
+    private DonorFormModel _model = new();
+    private bool IsEdit => DonorId.HasValue;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (DonorId.HasValue)
+        {
+            var donor = await DonorService.GetByIdAsync(DonorId.Value);
+            if (donor is null)
+            {
+                Navigation.NavigateTo("/donors?error=notfound");
+                return;
+            }
+            _model = DonorFormModel.FromEntity(donor);
+        }
+        else
+        {
+            _model = new DonorFormModel();
+        }
+    }
+
+    private async Task HandleSubmit()
+    {
+        var entity = _model.ToEntity();
+        bool ok;
+
+        if (IsEdit)
+        {
+            entity.DonorID = DonorId!.Value;
+            ok = await DonorService.UpdateAsync(entity);
+            Navigation.NavigateTo(ok ? "/donors?success=updated" : "/donors?error=update_failed");
+        }
+        else
+        {
+            ok = await DonorService.AddAsync(entity);
+            Navigation.NavigateTo(ok ? "/donors?success=created" : "/donors?error=create_failed");
+        }
+    }
+}

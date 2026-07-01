@@ -3,32 +3,41 @@
 | Field            | Value                                             |
 | ---------------- | ------------------------------------------------- |
 | Migration (cell) | `r<x>-m<y>-s<z>-<stack>` (e.g. `r0-m1-s1-nextjs`) |
-| Date             | 2026/06/30                                        |
+| Date             | 2026/07/01                                        |
 
 ## Conversation
 
 **Timing (wall-clock):**
 
-- pre-generation (spec): hh:mm:ss.ss or None (no planning)
-- generation: hh:mm:ss.ss
-  > This should encompass recorded time per prompt, as well as invested time by the developer.
+- complete run: _..._
+  > This should encompass recorded time per prompt, as well as invested time by the developer in between prompts.
 
 ### Prompt 1
 
-Starting condition: None/Cold
+**Starting condition:** Describe initial state...
 
-Mode: `agent` | `plan` | `ask`
+**Mode:** `Agent` | `Plan` | `Ask`
 
-Prompt: Do xyz...
+**Prompt:** Do xyz...
 
 ---
 
-Duration: hh:mm:ss.ss
+#### Plan creation
 
-Brief description of changes: Added/Changed/... xyz...
+**Duration:** _..._
 
-Reply:
+**Created plan:**
 
 ````md
-I did xyz...
+...
+````
+
+#### Plan execution
+
+**Duration:** _..._
+
+**Reply:**
+
+````md
+...
 ````
