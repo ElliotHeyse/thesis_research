@@ -1,0 +1,47 @@
+@page "/lots/categories/delete/{CategoryId:int}"
+@rendermode InteractiveServer
+@inject CategoryService CategoryService
+@inject NavigationManager Navigation
+
+<PageTitle>Delete Category | Taylor PTA - Silent Auction</PageTitle>
+
+<LotsSubNav ActiveTab="categories" />
+
+@if (_category is null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div class="c-confirm-delete">
+        <h3>Delete Category</h3>
+        <p>Are you sure you want to delete this category?</p>
+        <dl class="c-confirm-delete__details">
+            <dt>ID</dt><dd>@_category.CategoryID</dd>
+            <dt>Description</dt><dd>@_category.Description</dd>
+        </dl>
+        <div class="c-form__actions">
+            <button class="c-button c-button--danger" @onclick="ConfirmDelete">Confirm Delete</button>
+            <a href="/lots/categories" class="c-button c-button--secondary">Cancel</a>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public int CategoryId { get; set; }
+
+    private Category? _category;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _category = await CategoryService.GetByIdAsync(CategoryId);
+        if (_category is null)
+            Navigation.NavigateTo("/lots/categories?error=notfound");
+    }
+
+    private async Task ConfirmDelete()
+    {
+        await CategoryService.DeleteAsync(CategoryId);
+        Navigation.NavigateTo("/lots/categories?success=deleted");
+    }
+}

@@ -1,0 +1,42 @@
+@using Microsoft.AspNetCore.WebUtilities
+
+@if (!string.IsNullOrEmpty(SuccessMessage))
+{
+    <div class="alert alert-success">@SuccessMessage</div>
+}
+@if (!string.IsNullOrEmpty(ErrorMessage))
+{
+    <div class="alert alert-danger">@ErrorMessage</div>
+}
+
+@code {
+    [Parameter, SupplyParameterFromQuery(Name = "success")]
+    public string? Success { get; set; }
+
+    [Parameter, SupplyParameterFromQuery(Name = "error")]
+    public string? Error { get; set; }
+
+    private string? SuccessMessage => Success switch
+    {
+        "created" => "Record created successfully.",
+        "updated" => "Record updated successfully.",
+        "deleted" => "Record deleted successfully.",
+        "receipts_sent" => "Tax receipts generated and donors marked as sent.",
+        "letters_generated" => "Donor letters generated successfully.",
+        _ when !string.IsNullOrEmpty(Success) => "Operation completed successfully.",
+        _ => null
+    };
+
+    private string? ErrorMessage => Error switch
+    {
+        "has_items" => "Cannot delete donor with associated items.",
+        "notfound" => "Record not found.",
+        "delete_failed" => "Failed to delete record.",
+        "invalid_id" => "Invalid ID provided.",
+        "update_failed" => "Failed to update record.",
+        "no_selection" => "Please select at least one donor.",
+        "create_failed" => "Failed to create record.",
+        _ when !string.IsNullOrEmpty(Error) => "An error occurred.",
+        _ => null
+    };
+}

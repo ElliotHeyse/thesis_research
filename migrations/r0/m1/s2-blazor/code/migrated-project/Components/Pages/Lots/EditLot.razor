@@ -1,0 +1,131 @@
+@page "/lots/lots/edit"
+@page "/lots/lots/edit/{LotId:int}"
+@rendermode InteractiveServer
+@inject LotService LotService
+@inject CategoryService CategoryService
+@inject NavigationManager Navigation
+
+<PageTitle>@(IsEdit ? "Edit Lot" : "Add Lot") | Taylor PTA - Silent Auction</PageTitle>
+
+<LotsSubNav ActiveTab="lots">
+    <ActionContent>
+        @if (IsEdit)
+        {
+            <a href="/lots/lots/delete/@LotId" class="c-button c-button--danger">Delete Lot</a>
+        }
+    </ActionContent>
+</LotsSubNav>
+
+<FlashMessages />
+
+<EditForm Model="_model" OnValidSubmit="HandleSubmit" class="c-form">
+    <DataAnnotationsValidator />
+    <ValidationSummary class="alert alert-danger" />
+
+    <div class="c-form__field">
+        <label for="description">Description</label>
+        <InputText id="description" @bind-Value="_model.Description" class="c-form__input" />
+        <ValidationMessage For="() => _model.Description" />
+    </div>
+
+    <div class="c-form__field">
+        <label for="categoryID">Category</label>
+        <InputSelect id="categoryID" @bind-Value="_categorySelection" class="c-form__input">
+            <option value="">— None —</option>
+            @foreach (var cat in _categories)
+            {
+                <option value="@cat.CategoryID">@cat.Description</option>
+            }
+        </InputSelect>
+    </div>
+
+    <div class="c-form__field">
+        <label for="highestBid">Highest Bid</label>
+        <InputNumber id="highestBid" @bind-Value="_model.HighestBid" step="0.01" class="c-form__input" placeholder="No highest bid yet" />
+        <ValidationMessage For="() => _model.HighestBid" />
+    </div>
+
+    <div class="c-form__field">
+        <label for="bidderID">Bidder</label>
+        <InputSelect id="bidderID" @bind-Value="_bidderSelection" class="c-form__input">
+            <option value="">— None —</option>
+            @foreach (var bidder in _bidders)
+            {
+                <option value="@bidder.BidderID">@bidder.Name</option>
+            }
+        </InputSelect>
+    </div>
+
+    <div class="c-form__field c-form__field--checkbox">
+        <InputCheckbox id="delivered" @bind-Value="_model.Delivered" />
+        <label for="delivered">Delivered</label>
+    </div>
+
+    <div class="c-form__field">
+        <label for="image">Image URL</label>
+        <InputText id="image" @bind-Value="_model.Image" class="c-form__input" placeholder="Image URL" />
+        <ValidationMessage For="() => _model.Image" />
+    </div>
+
+    <div class="c-form__actions">
+        <button type="submit" class="c-button c-button--primary">@(IsEdit ? "Update" : "Add Lot")</button>
+        <a href="/lots/lots" class="c-button c-button--secondary">Cancel</a>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter] public int? LotId { get; set; }
+
+    private LotFormModel _model = new();
+    private List<Category> _categories = [];
+    private List<(int BidderID, string Name)> _bidders = [];
+    private string _categorySelection = string.Empty;
+    private string _bidderSelection = string.Empty;
+    private bool IsEdit => LotId.HasValue;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _categories = await CategoryService.GetAllAsync();
+        _bidders = await LotService.GetBiddersAsync();
+
+        if (LotId.HasValue)
+        {
+            var lot = await LotService.GetByIdAsync(LotId.Value);
+            if (lot is null)
+            {
+                Navigation.NavigateTo("/lots/lots?error=notfound");
+                return;
+            }
+            _model = LotFormModel.FromEntity(lot);
+            _categorySelection = lot.CategoryID?.ToString() ?? string.Empty;
+            _bidderSelection = lot.WinningBidder?.ToString() ?? string.Empty;
+        }
+        else
+        {
+            _model = new LotFormModel();
+            _categorySelection = string.Empty;
+            _bidderSelection = string.Empty;
+        }
+    }
+
+    private async Task HandleSubmit()
+    {
+        _model.CategoryID = int.TryParse(_categorySelection, out var catId) ? catId : null;
+        _model.BidderID = int.TryParse(_bidderSelection, out var bidderId) ? bidderId : null;
+
+        var lot = LotService.FromForm(_model);
+
+        bool ok;
+        if (IsEdit)
+        {
+            lot.LotID = LotId!.Value;
+            ok = await LotService.UpdateAsync(lot);
+        }
+        else
+        {
+            ok = await LotService.AddAsync(lot);
+        }
+
+        Navigation.NavigateTo(ok ? "/lots/lots?success=" + (IsEdit ? "updated" : "created") : "/lots/lots?error=update_failed");
+    }
+}
