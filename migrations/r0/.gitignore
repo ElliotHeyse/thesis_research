@@ -2,6 +2,7 @@
 # Each migration cell can remove this gitignore, which will resolve itself after all migrations are merged again
 # migrated-project/
 
-# Disable all other migration cells
-# m1/s1-nextjs/
-# m1/s2-blazor/
+# Ignore all other migration cells per migration branch
+## m1/**
+m2/**
+m3/**
