@@ -1,0 +1,120 @@
+@page "/lots"
+@page "/lots/items"
+@rendermode InteractiveServer
+@inject ItemService ItemService
+@inject NavigationManager Navigation
+
+<PageTitle>Items | Taylor PTA - Silent Auction</PageTitle>
+
+<LotsSubNav ActiveTab="items">
+    <ActionContent>
+        <a href="/lots/items/edit" class="c-button c-button--primary">Add New Item</a>
+        <button type="submit" form="items-lot-form" class="c-button c-button--success">Save Changes</button>
+    </ActionContent>
+</LotsSubNav>
+
+<FlashMessages />
+
+@if (_items is null || _lots is null)
+{
+    <p>Loading...</p>
+}
+else if (_items.Count == 0)
+{
+    <div class="c-empty-state">No items found</div>
+}
+else
+{
+    <EditForm id="items-lot-form" Model="_formModel" OnValidSubmit="SaveLotChanges">
+        <div class="c-table-shell">
+            <table class="c-table">
+                <thead>
+                    <tr>
+                        <th>Item ID</th>
+                        <th>Description</th>
+                        <th>Retail Value</th>
+                        <th>Donor</th>
+                        <th>Lot</th>
+                        <th>Actions</th>
+                        <th>Download Bidding Sheet</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in _items)
+                    {
+                        <tr>
+                            <td>@item.ItemID</td>
+                            <td>@FormatHelper.OrDash(item.Description)</td>
+                            <td>@FormatHelper.OrDash(item.RetailValue)</td>
+                            <td>@FormatHelper.OrDash(item.BusinessName)</td>
+                            <td>
+                                <select class="c-select" @bind="_lotSelections[item.ItemID]">
+                                    <option value="-1">— Unassigned —</option>
+                                    @foreach (var lot in _lots)
+                                    {
+                                        <option value="@lot.LotID">@lot.Description</option>
+                                    }
+                                </select>
+                            </td>
+                            <td class="c-action-links">
+                                <a href="/lots/items/edit/@item.ItemID">Edit</a>
+                                <a href="/lots/items/delete/@item.ItemID">Delete</a>
+                            </td>
+                            <td>
+                                <a href="/api/pdf/bidding-sheet/@item.ItemID" target="_blank" class="c-button c-button--success c-button--small">Download Bidding Sheet</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </EditForm>
+}
+
+@code {
+    private List<ItemListRow>? _items;
+    private List<(int LotID, string Description)>? _lots;
+    private Dictionary<int, int> _lotSelections = new();
+    private object _formModel = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _items = await ItemService.GetAllAsync();
+        _lots = await ItemService.GetLotDescriptionsAsync();
+
+        if (_items is not null)
+        {
+            foreach (var item in _items)
+            {
+                _lotSelections[item.ItemID] = item.LotID ?? -1;
+            }
+        }
+    }
+
+    private async Task SaveLotChanges()
+    {
+        if (_items is null)
+            return;
+
+        var changes = new List<ItemLotChange>();
+        foreach (var item in _items)
+        {
+            var current = item.LotID ?? -1;
+            var selected = _lotSelections.GetValueOrDefault(item.ItemID, -1);
+            if (current != selected)
+            {
+                changes.Add(new ItemLotChange { ItemID = item.ItemID, NewLotID = selected });
+            }
+        }
+
+        if (changes.Count > 0)
+        {
+            var ok = await ItemService.ModifyLotAssignmentsAsync(changes);
+            Navigation.NavigateTo(ok ? "/lots/items?success=updated" : "/lots/items?error=update_failed", forceLoad: true);
+        }
+        else
+        {
+            Navigation.NavigateTo("/lots/items?success=updated", forceLoad: true);
+        }
+    }
+}
