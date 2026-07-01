@@ -9,6 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@sonar/scan": "^4.3.8",
     "mysql2": "^3.22.5",
     "next": "16.2.9",
     "puppeteer": "^25.2.1",
