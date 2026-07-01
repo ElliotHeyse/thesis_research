@@ -1,0 +1,8 @@
+@page "/lots"
+@rendermode InteractiveServer
+@inject NavigationManager Navigation
+
+@code {
+    protected override void OnInitialized() =>
+        Navigation.NavigateTo("/lots/items", replace: true);
+}

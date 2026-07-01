@@ -1,0 +1,46 @@
+@page "/lots/categories"
+@rendermode InteractiveServer
+@inject CategoryService CategoryService
+
+<PageTitle>Categories | Taylor PTA - Silent Auction</PageTitle>
+
+<LotsSubNav ActionContent="@_addButton" />
+<FlashAlert />
+
+<DataTable ItemCount="_categories?.Count" Message="No categories found">
+    <Header>
+        <tr>
+            <th>Category ID</th>
+            <th>Description</th>
+            <th>Edit Category</th>
+        </tr>
+    </Header>
+    <Body>
+        @if (_categories is not null)
+        {
+            @foreach (var category in _categories)
+            {
+                <tr>
+                    <td>@category.CategoryID</td>
+                    <td>@FormatHelper.OrDash(category.Description)</td>
+                    <td><a href="/lots/categories/edit/@category.CategoryID">Edit</a></td>
+                </tr>
+            }
+        }
+    </Body>
+</DataTable>
+
+@code {
+    private List<Category>? _categories;
+    private RenderFragment _addButton = builder =>
+    {
+        builder.OpenElement(0, "a");
+        builder.AddAttribute(1, "href", "/lots/categories/edit");
+        builder.AddAttribute(2, "class", "c-btn c-btn--primary");
+        builder.AddContent(3, "Add New Category");
+        builder.CloseElement();
+    };
+
+    protected override async Task OnInitializedAsync() =>
+        _categories = await CategoryService.GetCategoriesAsync();
+}
