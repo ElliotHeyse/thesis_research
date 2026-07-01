@@ -1,0 +1,56 @@
+@page "/lots/lots"
+@rendermode InteractiveServer
+@inject LotService LotService
+
+<PageTitle>Lots | Taylor PTA - Silent Auction</PageTitle>
+
+<LotsSubNav ActionContent="@_addButton" />
+<FlashAlert />
+
+<DataTable ItemCount="_lots?.Count" Message="No lots found">
+    <Header>
+        <tr>
+            <th>Lot ID</th>
+            <th>Description</th>
+            <th>Highest Bid</th>
+            <th>Winner</th>
+            <th>Delivered</th>
+            <th>Category</th>
+            <th>Edit Lot</th>
+            <th>View Lot</th>
+        </tr>
+    </Header>
+    <Body>
+        @if (_lots is not null)
+        {
+            @foreach (var lot in _lots)
+            {
+                <tr>
+                    <td>@lot.LotID</td>
+                    <td>@FormatHelper.OrDash(lot.Description)</td>
+                    <td>@FormatHelper.Currency(lot.WinningBid)</td>
+                    <td>@FormatHelper.OrDash(lot.Winner)</td>
+                    <td>@FormatHelper.YesNo(lot.Delivered)</td>
+                    <td>@FormatHelper.OrDash(lot.Category)</td>
+                    <td><a href="/lots/lots/edit/@lot.LotID">Edit</a></td>
+                    <td><a href="/lots/lots/@lot.LotID">View</a></td>
+                </tr>
+            }
+        }
+    </Body>
+</DataTable>
+
+@code {
+    private List<LotListRow>? _lots;
+    private RenderFragment _addButton = builder =>
+    {
+        builder.OpenElement(0, "a");
+        builder.AddAttribute(1, "href", "/lots/lots/edit");
+        builder.AddAttribute(2, "class", "c-btn c-btn--primary");
+        builder.AddContent(3, "Add New Lot");
+        builder.CloseElement();
+    };
+
+    protected override async Task OnInitializedAsync() =>
+        _lots = await LotService.GetLotsAsync();
+}

@@ -1,0 +1,21 @@
+@using Microsoft.AspNetCore.Components.Routing
+
+<div class="c-subnav o-flex o-flex--justify-between o-flex--align-center u-gap-space-200">
+    <div class="o-flex u-gap-space-100">
+        @foreach (var tab in Tabs)
+        {
+            <NavLink href="@tab.Href" class="c-subnav__item" ActiveClass="c-subnav__item--active">
+                @tab.Label
+            </NavLink>
+        }
+    </div>
+    @if (ActionContent is not null)
+    {
+        <div class="c-subnav__actions">@ActionContent</div>
+    }
+</div>
+
+@code {
+    [Parameter] public required IEnumerable<(string Label, string Href)> Tabs { get; set; }
+    [Parameter] public RenderFragment? ActionContent { get; set; }
+}

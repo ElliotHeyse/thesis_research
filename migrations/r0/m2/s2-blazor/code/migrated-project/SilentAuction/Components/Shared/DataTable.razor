@@ -1,0 +1,19 @@
+@if (ItemCount is null or 0)
+{
+    <div class="empty-state @CssClass">@Message</div>
+}
+else
+{
+    <table class="template-table">
+        <thead>@Header</thead>
+        <tbody>@Body</tbody>
+    </table>
+}
+
+@code {
+    [Parameter] public RenderFragment? Header { get; set; }
+    [Parameter] public RenderFragment? Body { get; set; }
+    [Parameter] public int? ItemCount { get; set; }
+    [Parameter] public string Message { get; set; } = "No records found";
+    [Parameter] public string CssClass { get; set; } = "info";
+}
