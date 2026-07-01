@@ -1,0 +1,46 @@
+@page "/auction"
+@rendermode InteractiveServer
+@inject AuctionService AuctionService
+@using SilentAuction.Models
+@using SilentAuction.Services
+
+<PageTitle>Auction | Taylor PTA - Silent Auction</PageTitle>
+
+<div class="o-flex o-flex--column u-gap-space-200">
+    @if (_catalog is null)
+    {
+        <p>Loading...</p>
+    }
+    else
+    {
+        @foreach (var (categoryName, items) in _catalog)
+        {
+            <section class="c-auction-category">
+                <h2>@categoryName</h2>
+                @if (items.Count == 0)
+                {
+                    <p class="c-empty-state">No items in this category.</p>
+                }
+                else
+                {
+                    <div class="o-flex o-flex--column u-gap-space-100">
+                        @foreach (var item in items)
+                        {
+                            <div class="c-auction-item">
+                                <span>@item.Description</span>
+                                <span>@FormatService.FormatCurrency(item.RetailValue)</span>
+                            </div>
+                        }
+                    </div>
+                }
+            </section>
+        }
+    }
+</div>
+
+@code {
+    private List<(string CategoryName, List<AuctionItemDto> Items)>? _catalog;
+
+    protected override async Task OnInitializedAsync() =>
+        _catalog = await AuctionService.GetCatalogByCategoryAsync();
+}

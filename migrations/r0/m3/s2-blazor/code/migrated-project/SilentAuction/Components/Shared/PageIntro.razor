@@ -1,0 +1,14 @@
+@using SilentAuction.Services
+
+<div class="o-flex o-flex--column u-gap-space-200">
+    <h2>@Title</h2>
+    @if (!string.IsNullOrEmpty(Description))
+    {
+        <p>@Description</p>
+    }
+</div>
+
+@code {
+    [Parameter] public string Title { get; set; } = "";
+    [Parameter] public string? Description { get; set; }
+}

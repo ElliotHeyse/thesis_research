@@ -1,0 +1,51 @@
+@page "/donors/pending-receipts"
+@rendermode InteractiveServer
+@inject DonorService DonorService
+@using SilentAuction.Models
+@using SilentAuction.Services
+
+<PageTitle>Pending Receipts | Taylor PTA - Silent Auction</PageTitle>
+
+<DonorsSubnav />
+
+@if (_donors is null)
+{
+    <p>Loading...</p>
+}
+else if (_donors.Count == 0)
+{
+    <p class="c-empty-state">No donors with pending tax receipts.</p>
+}
+else
+{
+    <div class="c-table-shell">
+        <table class="c-table">
+            <thead>
+                <tr>
+                    <th>Donor</th>
+                    <th>Contact</th>
+                    <th>Items</th>
+                    <th>Total Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var donor in _donors)
+                {
+                    <tr>
+                        <td>@FormatService.GetDonorDisplayName(donor.BusinessName, donor.ContactName)</td>
+                        <td>@donor.ContactName</td>
+                        <td>@donor.TotalItems</td>
+                        <td>@FormatService.FormatCurrency(donor.TotalValue)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+@code {
+    private List<DonorPendingReceiptDto>? _donors;
+
+    protected override async Task OnInitializedAsync() =>
+        _donors = await DonorService.GetPendingReceiptsAsync();
+}
