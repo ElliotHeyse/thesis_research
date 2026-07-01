@@ -3,7 +3,7 @@
 | Field            | Value                                             |
 | ---------------- | ------------------------------------------------- |
 | Migration (cell) | `r<x>-m<y>-s<z>-<stack>` (e.g. `r0-m1-s1-nextjs`) |
-| Date             | 2026/06/30                                        |
+| Date             | 2026/07/01                                        |
 
 ## Conversation
 
@@ -17,9 +17,9 @@
 
 **Starting condition:** Describe initial state...
 
-**Mode:** `agent`
+**Mode:** `Agent` | `Plan` | `Ask`
 
-**Prompt:** Migrate the php application at @original-php-project/ to Blazor Server (.NET). Produce a full-stack implementation — frontend and backend — that is a working application equivalent to the existing one, using the existing database per the provided schema (do not modify the database). Migrate the functionality of the current app. The migrated code lives in @migrated-project, @original-php-project/ stays and remains unaltered.
+**Prompt:** Do xyz...
 
 ---
 
