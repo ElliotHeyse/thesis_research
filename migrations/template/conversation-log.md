@@ -23,12 +23,22 @@
 
 ---
 
-**Duration:** hh:mm:ss.ss
+#### Plan creation
 
-**Brief description of changes:** Added/Changed/... xyz...
+**Duration:** _..._
 
-Reply:
+**Created plan:**
 
 ````md
-I did xyz...
+...
+````
+
+#### Plan execution
+
+**Duration:** _..._
+
+**Reply:**
+
+````md
+...
 ````
