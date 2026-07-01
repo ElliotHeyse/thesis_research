@@ -1,0 +1,26 @@
+@inject NavigationManager Navigation
+
+<Subnav Tabs="Tabs" ActiveKey="@ActiveKey" ActionContent="@ActionContent" />
+
+@code {
+    [Parameter] public RenderFragment? ActionContent { get; set; }
+
+    private static readonly IReadOnlyList<Subnav.SubnavTab> Tabs =
+    [
+        new("items", "Items", "/lots/items"),
+        new("lots", "Lots", "/lots/lots"),
+        new("categories", "Categories", "/lots/categories")
+    ];
+
+    private string ActiveKey
+    {
+        get
+        {
+            var path = Navigation.ToBaseRelativePath(Navigation.Uri).Split('?')[0];
+            if (path.StartsWith("lots/items")) return "items";
+            if (path.StartsWith("lots/lots")) return "lots";
+            if (path.StartsWith("lots/categories")) return "categories";
+            return "items";
+        }
+    }
+}

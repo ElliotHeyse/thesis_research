@@ -9,9 +9,8 @@
 
 **Timing (wall-clock):**
 
-- pre-generation (spec): hh:mm:ss.ss or None (no planning)
-- generation: hh:mm:ss.ss
-  > This should encompass recorded time per prompt, as well as invested time by the developer.
+- complete run: _..._
+  > This should encompass recorded time per prompt, as well as invested time by the developer in between prompts.
 
 ### Prompt 1
 
@@ -23,12 +22,22 @@
 
 ---
 
-**Duration:** hh:mm:ss.ss
+#### Plan creation
 
-**Brief description of changes:** Added/Changed/... xyz...
+**Duration:** _..._
 
-Reply:
+**Created plan:**
 
 ````md
-I did xyz...
+...
+````
+
+#### Plan execution
+
+**Duration:** _..._
+
+**Reply:**
+
+````md
+...
 ````

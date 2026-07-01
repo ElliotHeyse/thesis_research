@@ -1,0 +1,41 @@
+@page "/lots/items/delete/{ItemId:int}"
+@rendermode InteractiveServer
+@inject ItemService ItemService
+@inject NavigationManager Navigation
+@using SilentAuction.Services
+
+<PageTitle>Delete Item | Taylor PTA - Silent Auction</PageTitle>
+
+<LotsSubnav />
+
+@if (_item is null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <ConfirmDelete Title="Delete Item"
+                   Message="@($"Are you sure you want to delete item \"{_item.Description}\"?")"
+                   CancelHref="/lots/items"
+                   OnConfirm="ConfirmDelete" />
+}
+
+@code {
+    [Parameter] public int ItemId { get; set; }
+
+    private Models.ItemDetailDto? _item;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _item = await ItemService.GetByIdAsync(ItemId);
+        if (_item is null)
+            Navigation.NavigateTo("/lots/items?error=notfound");
+    }
+
+    private async Task ConfirmDelete()
+    {
+        var result = await ItemService.DeleteAsync(ItemId);
+        var type = result.IsSuccess ? "success" : "error";
+        Navigation.NavigateTo($"/lots/items?{type}={result.FlashCode}");
+    }
+}

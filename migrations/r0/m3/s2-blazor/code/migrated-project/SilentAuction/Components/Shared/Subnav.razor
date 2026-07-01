@@ -1,0 +1,27 @@
+@using Microsoft.AspNetCore.Components
+
+<div class="o-flex o-flex--justify-between o-flex--align-center">
+    <div class="c-lot-nav-links">
+        @foreach (var tab in Tabs)
+        {
+            <NavLink href="@tab.Href" class="@GetTabClass(tab.Key)" Match="NavLinkMatch.Prefix">
+                @tab.Label
+            </NavLink>
+        }
+    </div>
+    @if (ActionContent is not null)
+    {
+        <div>@ActionContent</div>
+    }
+</div>
+
+@code {
+    [Parameter] public required IReadOnlyList<SubnavTab> Tabs { get; set; }
+    [Parameter] public string ActiveKey { get; set; } = "";
+    [Parameter] public RenderFragment? ActionContent { get; set; }
+
+    private string GetTabClass(string key) =>
+        key == ActiveKey ? "c-lot-subnav c-lot-subnav--active" : "c-lot-subnav";
+
+    public record SubnavTab(string Key, string Label, string Href);
+}

@@ -1,0 +1,48 @@
+@typeparam TItem
+
+@if (Items.Count == 0)
+{
+    <p class="c-empty-state">@EmptyMessage</p>
+}
+else
+{
+    <div class="c-table-shell">
+        <table class="c-table">
+            <thead>
+                <tr>
+                    @foreach (var col in Columns)
+                    {
+                        <th>@col.Header</th>
+                    }
+                    @if (ShowActions)
+                    {
+                        <th>Actions</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Items)
+                {
+                    <tr>
+                        @RowTemplate(item)
+                        @if (ShowActions && ActionTemplate is not null)
+                        {
+                            <td class="c-table__actions">@ActionTemplate(item)</td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+@code {
+    [Parameter] public required IReadOnlyList<TItem> Items { get; set; }
+    [Parameter] public required IReadOnlyList<TableColumn> Columns { get; set; }
+    [Parameter] public required RenderFragment<TItem> RowTemplate { get; set; }
+    [Parameter] public RenderFragment<TItem>? ActionTemplate { get; set; }
+    [Parameter] public string EmptyMessage { get; set; } = "No records found.";
+    [Parameter] public bool ShowActions { get; set; } = true;
+
+    public record TableColumn(string Header);
+}
