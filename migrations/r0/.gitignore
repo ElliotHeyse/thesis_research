@@ -4,5 +4,5 @@
 
 # Ignore all other migration cells per migration branch
 m1/**
-m2/s1-nextjs/
-m2/s2-blazor/
+# m2/s1-nextjs/
+# m2/s2-blazor/
