@@ -45,3 +45,6 @@ coverage/
 ## Publish
 publish/
 *.pubxml.user
+
+## SonarQube
+.sonarqube/
