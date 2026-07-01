@@ -1,0 +1,60 @@
+@page "/auction"
+@rendermode InteractiveServer
+@inject AuctionService AuctionService
+
+<PageTitle>Auction | Taylor PTA - Silent Auction</PageTitle>
+
+<div class="o-flex o-flex--column u-gap-space-200">
+    @foreach (var category in _categories)
+    {
+        var items = _itemsByCategory.GetValueOrDefault(category.CategoryID) ?? [];
+        <div>
+            <h3>@category.Description</h3>
+            @if (items.Count == 0)
+            {
+                <p>No items in this category.</p>
+            }
+            else
+            {
+                <ul>
+                    @foreach (var item in items)
+                    {
+                        <li>
+                            <div>
+                                <h4>@item.Description</h4>
+                                <p>Retail Value: @FormatHelper.Currency(item.RetailValue)</p>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            }
+        </div>
+    }
+</div>
+
+@code {
+    private List<Category> _categories = [];
+    private Dictionary<int, List<AuctionItemRow>> _itemsByCategory = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var items = await AuctionService.GetItemsAsync();
+        _categories = await AuctionService.GetCategoryDescriptionsAsync();
+
+        foreach (var item in items)
+        {
+            if (item.CategoryID is null)
+            {
+                continue;
+            }
+
+            if (!_itemsByCategory.TryGetValue(item.CategoryID.Value, out var list))
+            {
+                list = [];
+                _itemsByCategory[item.CategoryID.Value] = list;
+            }
+
+            list.Add(item);
+        }
+    }
+}

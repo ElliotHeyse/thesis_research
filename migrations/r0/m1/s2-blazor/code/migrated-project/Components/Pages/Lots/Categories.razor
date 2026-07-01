@@ -1,0 +1,54 @@
+@page "/lots/categories"
+@inject CategoryService CategoryService
+
+<PageTitle>Categories | Taylor PTA - Silent Auction</PageTitle>
+
+<LotsSubNav ActiveTab="categories">
+    <ActionContent>
+        <a href="/lots/categories/edit" class="c-button c-button--primary">Add New Category</a>
+    </ActionContent>
+</LotsSubNav>
+
+<FlashMessages />
+
+@if (_categories is null)
+{
+    <p>Loading...</p>
+}
+else if (_categories.Count == 0)
+{
+    <div class="c-empty-state">No categories found</div>
+}
+else
+{
+    <div class="c-table-shell">
+        <table class="c-table">
+            <thead>
+                <tr>
+                    <th>Category ID</th>
+                    <th>Description</th>
+                    <th>Edit Category</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var category in _categories)
+                {
+                    <tr>
+                        <td>@category.CategoryID</td>
+                        <td>@FormatHelper.OrDash(category.Description)</td>
+                        <td><a href="/lots/categories/edit/@category.CategoryID">Edit</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+@code {
+    private List<Category>? _categories;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _categories = await CategoryService.GetAllAsync();
+    }
+}

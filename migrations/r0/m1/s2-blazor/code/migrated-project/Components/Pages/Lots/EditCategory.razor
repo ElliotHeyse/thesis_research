@@ -1,0 +1,80 @@
+@page "/lots/categories/edit"
+@page "/lots/categories/edit/{CategoryId:int}"
+@rendermode InteractiveServer
+@inject CategoryService CategoryService
+@inject NavigationManager Navigation
+
+<PageTitle>@(IsEdit ? "Edit Category" : "Add Category") | Taylor PTA - Silent Auction</PageTitle>
+
+<LotsSubNav ActiveTab="categories">
+    <ActionContent>
+        @if (IsEdit)
+        {
+            <a href="/lots/categories/delete/@CategoryId" class="c-button c-button--danger">Delete Category</a>
+        }
+    </ActionContent>
+</LotsSubNav>
+
+<FlashMessages />
+
+<EditForm Model="_model" OnValidSubmit="HandleSubmit" class="c-form">
+    <DataAnnotationsValidator />
+    <ValidationSummary class="alert alert-danger" />
+
+    <div class="c-form__field">
+        <label for="description">Description</label>
+        <InputText id="description" @bind-Value="_model.Description" class="c-form__input" />
+        <ValidationMessage For="() => _model.Description" />
+    </div>
+
+    <div class="c-form__actions">
+        <button type="submit" class="c-button c-button--primary">@(IsEdit ? "Update" : "Add Category")</button>
+        <a href="/lots/categories" class="c-button c-button--secondary">Cancel</a>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter] public int? CategoryId { get; set; }
+
+    private CategoryFormModel _model = new();
+    private bool IsEdit => CategoryId.HasValue;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (CategoryId.HasValue)
+        {
+            var category = await CategoryService.GetByIdAsync(CategoryId.Value);
+            if (category is null)
+            {
+                Navigation.NavigateTo("/lots/categories?error=notfound");
+                return;
+            }
+            _model = CategoryFormModel.FromEntity(category);
+        }
+        else
+        {
+            _model = new CategoryFormModel();
+        }
+    }
+
+    private async Task HandleSubmit()
+    {
+        var entity = new Category
+        {
+            CategoryID = CategoryId ?? 0,
+            Description = _model.Description
+        };
+
+        bool ok;
+        if (IsEdit)
+        {
+            ok = await CategoryService.UpdateAsync(entity);
+        }
+        else
+        {
+            ok = await CategoryService.AddAsync(entity);
+        }
+
+        Navigation.NavigateTo(ok ? "/lots/categories?success=" + (IsEdit ? "updated" : "created") : "/lots/categories?error=update_failed");
+    }
+}

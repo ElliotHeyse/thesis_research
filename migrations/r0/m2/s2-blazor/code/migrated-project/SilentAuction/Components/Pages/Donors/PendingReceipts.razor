@@ -1,0 +1,50 @@
+@page "/donors/pending-receipts"
+@rendermode InteractiveServer
+@inject DonorService DonorService
+
+<PageTitle>Pending Receipts | Taylor PTA - Silent Auction</PageTitle>
+
+<DonorsSubNav />
+<FlashAlert />
+
+<DataTable ItemCount="_rows?.Count" Message="No donors with pending receipts found">
+    <Header>
+        <tr>
+            <th>ID</th>
+            <th>Business Name</th>
+            <th>Contact Name</th>
+            <th>Email</th>
+            <th>City</th>
+            <th>State</th>
+            <th>Tax Receipt</th>
+            <th>Total Items</th>
+            <th>Total Value</th>
+        </tr>
+    </Header>
+    <Body>
+        @if (_rows is not null)
+        {
+            @foreach (var row in _rows)
+            {
+                <tr>
+                    <td>@row.DonorID</td>
+                    <td>@FormatHelper.OrDash(row.BusinessName)</td>
+                    <td>@FormatHelper.OrDash(row.ContactName)</td>
+                    <td>@FormatHelper.OrDash(row.ContactEmail)</td>
+                    <td>@FormatHelper.OrDash(row.City)</td>
+                    <td>@FormatHelper.OrDash(row.State)</td>
+                    <td>@FormatHelper.YesNo(row.TaxReceipt)</td>
+                    <td>@row.TotalItems</td>
+                    <td>@FormatHelper.Currency(row.TotalValue)</td>
+                </tr>
+            }
+        }
+    </Body>
+</DataTable>
+
+@code {
+    private List<PendingReceiptRow>? _rows;
+
+    protected override async Task OnInitializedAsync() =>
+        _rows = await DonorService.GetDonorsWithoutReceiptAsync();
+}

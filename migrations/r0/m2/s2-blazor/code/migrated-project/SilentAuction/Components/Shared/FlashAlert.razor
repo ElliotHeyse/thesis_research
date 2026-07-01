@@ -1,0 +1,43 @@
+@using SilentAuction.Services
+
+@if (!string.IsNullOrEmpty(_message))
+{
+    <div class="@_cssClass">@_message</div>
+}
+
+@code {
+    [Inject] private FlashMessageService Flash { get; set; } = null!;
+    [Inject] private NavigationManager Navigation { get; set; } = null!;
+    [SupplyParameterFromQuery(Name = "success")] public string? Success { get; set; }
+    [SupplyParameterFromQuery(Name = "error")] public string? Error { get; set; }
+
+    private string? _message;
+    private string _cssClass = string.Empty;
+
+    protected override void OnParametersSet()
+    {
+        var flash = Flash.Consume();
+        if (flash is not null)
+        {
+            _message = FlashMessageService.ResolveText(flash);
+            _cssClass = flash.Type == FlashType.Success ? "alert alert-success" : "alert alert-danger";
+            return;
+        }
+
+        if (!string.IsNullOrEmpty(Success))
+        {
+            _message = FlashMessageService.ResolveText(new FlashMessage(FlashType.Success, Success));
+            _cssClass = "alert alert-success";
+        }
+        else if (!string.IsNullOrEmpty(Error))
+        {
+            _message = FlashMessageService.ResolveText(new FlashMessage(FlashType.Error, Error));
+            _cssClass = "alert alert-danger";
+        }
+        else
+        {
+            _message = null;
+            _cssClass = string.Empty;
+        }
+    }
+}
