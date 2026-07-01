@@ -17,7 +17,7 @@
 
 **Starting condition:** Describe initial state...
 
-**Mode:** `agent` | `plan` | `ask`
+**Mode:** `Agent` | `Plan` | `Ask`
 
 **Prompt:** Do xyz...
 

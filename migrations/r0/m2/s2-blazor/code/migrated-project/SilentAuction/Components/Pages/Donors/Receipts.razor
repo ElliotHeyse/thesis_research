@@ -1,0 +1,61 @@
+@page "/donors/receipts"
+@rendermode InteractiveServer
+@inject DonorService DonorService
+
+<PageTitle>Tax Receipts | Taylor PTA - Silent Auction</PageTitle>
+
+<DonorsSubNav />
+<FlashAlert />
+
+<p>Select donors to generate tax receipts.</p>
+
+@if (_donors is null)
+{
+    <p>Loading...</p>
+}
+else if (_donors.Count == 0)
+{
+    <div class="empty-state info">No eligible donors found</div>
+}
+else
+{
+    <form method="post" action="/api/pdf/tax-receipts">
+        <table class="template-table">
+            <thead>
+                <tr>
+                    <th>Select</th>
+                    <th>ID</th>
+                    <th>Business Name</th>
+                    <th>Contact Name</th>
+                    <th>Email</th>
+                    <th>City</th>
+                    <th>State</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var donor in _donors)
+                {
+                    <tr>
+                        <td><input type="checkbox" name="donorIds" value="@donor.DonorID" /></td>
+                        <td>@donor.DonorID</td>
+                        <td>@FormatHelper.OrDash(donor.BusinessName)</td>
+                        <td>@FormatHelper.OrDash(donor.ContactName)</td>
+                        <td>@FormatHelper.OrDash(donor.ContactEmail)</td>
+                        <td>@FormatHelper.OrDash(donor.City)</td>
+                        <td>@FormatHelper.OrDash(donor.State)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="form-actions" style="margin-top: 20px;">
+            <button type="submit" class="c-btn c-btn--primary">Generate Tax Receipts</button>
+        </div>
+    </form>
+}
+
+@code {
+    private List<Donor>? _donors;
+
+    protected override async Task OnInitializedAsync() =>
+        _donors = await DonorService.GetDonorsEligibleForReceiptAsync();
+}

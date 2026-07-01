@@ -1,0 +1,24 @@
+@using System.Linq.Expressions
+
+<div class="c-form__field">
+    <label for="@Id">@Label</label>
+    <InputText id="@Id" @bind-Value="Value" class="c-form__input" maxlength="@MaxLength" />
+    @if (Required)
+    {
+        <ValidationMessage For="@ValidationFor" />
+    }
+    else if (ValidationFor is not null)
+    {
+        <ValidationMessage For="@ValidationFor" />
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired] public string Label { get; set; } = string.Empty;
+    [Parameter, EditorRequired] public string Id { get; set; } = string.Empty;
+    [Parameter] public string? Value { get; set; }
+    [Parameter] public EventCallback<string?> ValueChanged { get; set; }
+    [Parameter] public int? MaxLength { get; set; }
+    [Parameter] public bool Required { get; set; }
+    [Parameter] public Expression<Func<string?>>? ValidationFor { get; set; }
+}

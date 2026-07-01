@@ -1,0 +1,110 @@
+@page "/lots/items/edit"
+@page "/lots/items/edit/{ItemId:int}"
+@rendermode InteractiveServer
+@inject ItemService ItemService
+@inject DonorService DonorService
+@inject NavigationManager Navigation
+@inject FlashMessageService Flash
+
+<PageTitle>@(ItemId.HasValue ? "Edit Item" : "Add Item") | Taylor PTA - Silent Auction</PageTitle>
+
+<LotsSubNav />
+<FlashAlert />
+
+<EditForm Model="_model" OnValidSubmit="HandleSubmit" class="c-form">
+    <DataAnnotationsValidator />
+
+    <div class="c-form__field">
+        <label for="Description">Description</label>
+        <InputText id="Description" @bind-Value="_model.Description" maxlength="75" class="c-form__input" />
+        <ValidationMessage For="@(() => _model.Description)" />
+    </div>
+
+    <div class="c-form__field">
+        <label for="RetailValue">Retail Value</label>
+        <InputNumber id="RetailValue" @bind-Value="_model.RetailValue" class="c-form__input" step="0.01" />
+        <ValidationMessage For="@(() => _model.RetailValue)" />
+    </div>
+
+    <div class="c-form__field">
+        <label for="DonorID">Donor</label>
+        <InputSelect id="DonorID" @bind-Value="_model.DonorID" class="c-form__input">
+            <option value="">Select donor</option>
+            @foreach (var donor in _donors)
+            {
+                <option value="@donor.DonorID">@FormatHelper.DonorSelectLabel(donor.BusinessName, donor.ContactName)</option>
+            }
+        </InputSelect>
+        <ValidationMessage For="@(() => _model.DonorID)" />
+    </div>
+
+    <div class="c-form__field">
+        <label for="LotID">Lot</label>
+        <InputSelect id="LotID" @bind-Value="_model.LotID" class="c-form__input">
+            <option value="">--- No lot selected ---</option>
+            @foreach (var lot in _lots)
+            {
+                <option value="@lot.LotID">@lot.Description</option>
+            }
+        </InputSelect>
+    </div>
+
+    <div class="form-actions">
+        <button type="submit" class="c-btn c-btn--primary">@(ItemId.HasValue ? "Update Item" : "Add Item")</button>
+        <a href="/lots/items" class="c-btn c-btn--secondary">Cancel</a>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter] public int? ItemId { get; set; }
+
+    private ItemFormModel _model = new();
+    private List<Donor> _donors = [];
+    private List<Lot> _lots = [];
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _donors = await DonorService.GetDonorsForSelectAsync();
+        _lots = await ItemService.GetLotDescriptionsAsync();
+
+        if (ItemId.HasValue)
+        {
+            var item = await ItemService.GetItemByIdAsync(ItemId.Value);
+            if (item is null)
+            {
+                Flash.SetError("notfound");
+                Navigation.NavigateTo("/lots/items");
+                return;
+            }
+
+            _model = new ItemFormModel
+            {
+                ItemID = item.ItemID,
+                Description = item.Description,
+                RetailValue = item.RetailValue,
+                DonorID = item.DonorID,
+                LotID = item.LotID
+            };
+        }
+        else
+        {
+            _model = new ItemFormModel();
+        }
+    }
+
+    private async Task HandleSubmit()
+    {
+        bool ok;
+        if (ItemId.HasValue)
+        {
+            ok = await ItemService.UpdateItemAsync(ItemId.Value, _model);
+        }
+        else
+        {
+            ok = await ItemService.AddItemAsync(_model);
+        }
+
+        Flash.SetSuccess(ok ? (ItemId.HasValue ? "updated" : "created") : "update_failed");
+        Navigation.NavigateTo("/lots/items");
+    }
+}

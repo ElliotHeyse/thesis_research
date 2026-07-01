@@ -4,5 +4,5 @@
 
 # Ignore all other migration cells per migration branch
 ## m1/**
-m2/**
+## m2/**
 m3/**

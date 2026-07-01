@@ -1,0 +1,24 @@
+@using SilentAuction.Components.Shared
+@using SilentAuction.Services
+@using Microsoft.AspNetCore.Components.Routing
+
+<SubNav Tabs="_tabs" ActionContent="_action" />
+
+@code {
+    [Parameter] public string ActiveTab { get; set; } = "donors";
+    [Parameter] public RenderFragment? ActionContent { get; set; }
+
+    private RenderFragment? _action;
+    private IEnumerable<(string Label, string Href)> _tabs =
+    [
+        ("All Donors", "/donors"),
+        ("Pending Receipts", "/donors/pending-receipts"),
+        ("Letters", "/donors/letters"),
+        ("Tax Receipts", "/donors/receipts")
+    ];
+
+    protected override void OnParametersSet()
+    {
+        _action = ActionContent;
+    }
+}

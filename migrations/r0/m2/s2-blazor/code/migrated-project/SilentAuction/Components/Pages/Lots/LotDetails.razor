@@ -1,0 +1,66 @@
+@page "/lots/lots/{LotId:int}"
+@rendermode InteractiveServer
+@inject LotService LotService
+@inject NavigationManager Navigation
+@inject FlashMessageService Flash
+
+<PageTitle>Lot Details | Taylor PTA - Silent Auction</PageTitle>
+
+<LotsSubNav />
+
+@if (_lot is null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div class="c-lot-details o-container">
+        <h3 class="c-lot-details__title">Lot @_lot.LotID</h3>
+        <div class="c-lot-details__content">
+            @if (!string.IsNullOrWhiteSpace(_lot.Image))
+            {
+                <div class="c-lot-details__image-wrapper">
+                    <img src="@_lot.Image" alt="Lot Image" class="c-lot-details__image">
+                </div>
+            }
+            <div class="c-lot-details__info">
+                <div class="c-detail-field">
+                    <span class="c-detail-field__label">Description</span>
+                    <span class="c-detail-field__value">@_lot.Description</span>
+                </div>
+                <div class="c-detail-field">
+                    <span class="c-detail-field__label">Highest Bid</span>
+                    <span class="c-detail-field__value">@FormatHelper.Currency(_lot.WinningBid)</span>
+                </div>
+                <div class="c-detail-field">
+                    <span class="c-detail-field__label">Winner</span>
+                    <span class="c-detail-field__value">@FormatHelper.OrDash(_lot.Winner ?? "No winner yet")</span>
+                </div>
+                <div class="c-detail-field c-detail-field--@(_lot.Delivered ? "yes" : "no")">
+                    <span class="c-detail-field__label">Delivered</span>
+                    <span class="c-detail-field__value">@FormatHelper.YesNo(_lot.Delivered)</span>
+                </div>
+                <div class="c-detail-field">
+                    <span class="c-detail-field__label">Category</span>
+                    <span class="c-detail-field__value">@FormatHelper.OrDash(_lot.CategoryDescription)</span>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public int LotId { get; set; }
+
+    private LotDetailRow? _lot;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _lot = await LotService.GetLotDetailAsync(LotId);
+        if (_lot is null)
+        {
+            Flash.SetError("notfound");
+            Navigation.NavigateTo("/lots/lots");
+        }
+    }
+}
