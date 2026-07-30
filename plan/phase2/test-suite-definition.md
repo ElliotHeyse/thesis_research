@@ -23,9 +23,9 @@
 - D3 Edit donor — edit seeded donor → changed values appear; the manual-TaxReceipt checkbox path reflects in state.
 - D4 Delete donor — two cases: delete a donor with no items → gone; attempt delete on a donor with seeded items → blocked, record persists (the FK guard — high-value).
 - D6 Pending receipts report — only donors with items and TaxReceipt=0 appear; item count and total value match seeded data; ineligible donors absent (presence + absence).
-- D7 Donor letters — selection — selection page lists expected donors. (The POST-to-print handoff: see manual note.)
+- D7 Donor letters — selection — selection page lists expected donors.
 - D9 Tax receipts — selection — only eligible donors (items, no receipt yet) listed; ineligible absent.
-- D10 Tax receipts — PDF + mark sent — fetch receipt → assert itemized donation values in PDF text; assert DB side-effect (TaxReceipt flips 0→1) via direct DB check before/after. This is your one read-path-with-side-effect; the before/after DB assertion is the clean way to catch it.
+- D10 Tax receipts — PDF + mark sent — fetch receipt → assert itemized donation values in PDF text; assert DB side-effect (TaxReceipt flips 0→1) via direct DB check before/after. This is your one read-path-with-side-effect; the before/after DB assertion is the clean way to catch it. PDF visual fidelity.
 
 ### Items
 
@@ -34,7 +34,7 @@
 - I3 Create item — valid create (description, retail, required donor, optional lot) → appears on list.
 - I4 Edit item — change reflected on re-read.
 - I5 Delete item — confirm → record gone.
-- I6 Bidding sheet PDF — fetch with no params → assert defaults in PDF text (50% retail / $5 / 15 rows); fetch with explicit startingBid/bidIncrement/rows → assert those values. Pure input→output, ideal for automation.
+- I6 Bidding sheet PDF — fetch with no params → assert defaults in PDF text (50% retail / $5 / 15 rows); fetch with explicit startingBid/bidIncrement/rows → assert those values. Pure input→output, ideal for automation. PDF visual fidelity.
 
 ### Lots
 
