@@ -9,7 +9,7 @@
 
 **Timing (wall-clock):**
 
-- complete run: _..._
+- complete run: _hh:mm:ss.ss_
   > This should encompass recorded time per prompt, as well as invested time by the developer in between prompts.
 
 ### Prompt 1
@@ -22,22 +22,12 @@
 
 ---
 
-#### Plan creation
+**Duration:** _hh:mm:ss.ss_
 
-**Duration:** _..._
-
-**Created plan:**
-
-````md
-...
-````
-
-#### Plan execution
-
-**Duration:** _..._
+**Brief description of changes:** Added/Changed/... xyz...
 
 **Reply:**
 
 ````md
-...
+I did xyz...
 ````
