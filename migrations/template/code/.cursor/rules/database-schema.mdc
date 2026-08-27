@@ -6,7 +6,7 @@ alwaysApply: false
 
 # Silent Auction Database Schema
 
-**Source of truth:** `plan/phase1/data-model-documentation/database.sql` (DDL only — no seed data).  
+**Source of truth:** `<root>/original-immutable/data/database.sql` (DDL only — no seed data).  
 **Database name:** `silent_auction`
 
 ## Frozen schema constraint
@@ -22,7 +22,7 @@ Use these values for local dev so the correctness harness can restore seed data 
 | Host     | `localhost`      |
 | Port     | `3306`           |
 | User     | `root`           |
-| Password | `MysqlEragon44!` |
+| Password | `password` |
 | Database | `silent_auction` |
 
 ## Naming conventions
